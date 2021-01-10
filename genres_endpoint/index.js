@@ -21,6 +21,17 @@ app.get("/api/genres", (req, res) => {
 	res.send(Genres)
 })
 
+// EndPoint for getting a single Genre
+app.get("/api/genres/:id", (req, res) => {
+	// check whether the requested id exists
+	const genre = Genres.find(i => i.Gid === parseInt(req.params.id))
+	// if requested id doesnot exist, return 404 not found
+	if (!genre) return res.status(404).send("Requested Genre Doesnot Exist")
+
+	// otherwise return the requested genre
+	res.send(genre)
+})
+
 // EndPoint for creating a new Genre
 app.post("/api/genres", (req, res) => {
 	// Generate id for the genre

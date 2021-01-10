@@ -11,6 +11,7 @@ Route: `http://vidly.com/api/genres`
 ##### Rubric
 
 - [x] EndPoint for getting the list of all Genres
+- [x] EndPoint for getting a single Genre
 - [x] EndPoint for creating a new Genre
 - [x] EndPoint for updating existing Genres
 - [x] EndPoint for deleting existing Genres
