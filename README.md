@@ -22,6 +22,6 @@ So far everything we have built will be in one file. It is not a good way to bui
 
 ##### Rubric
 
-- [ ] Create a new folder named `routes` to store all our routes for various endpoints.
-- [ ] We have already implemented the `generes` endpoint, move the code into a new file named `genres.js` and save it in `routes/` folder. 
-- [ ] Refactor all the code in `index.js` as well as in `genres.js`
+- [x] Create a new folder named `routes` to store all our routes for various endpoints.
+- [x] We have already implemented the `generes` endpoint, move the code into a new file named `genres.js` and save it in `routes/` folder. 
+- [x] Refactor all the code in `index.js` as well as in `genres.js`

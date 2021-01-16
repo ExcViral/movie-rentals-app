@@ -1,10 +1,6 @@
-const express = require('express')
-const app = express()
-app.use(express.json())
-
 const Joi = require('joi')
-
-// console.log("all ok")
+const express = require('express')
+const router = express.Router()
 
 // Genres Array
 // TODO: Implement Database
@@ -17,12 +13,12 @@ Genres = [
 ]
 
 // EndPoint for getting the list of all Genres
-app.get("/api/genres", (req, res) => {
+router.get("/", (req, res) => {
 	res.send(Genres)
 })
 
 // EndPoint for getting a single Genre
-app.get("/api/genres/:id", (req, res) => {
+router.get("/:id", (req, res) => {
 	// check whether the requested id exists
 	const genre = Genres.find(i => i.Gid === parseInt(req.params.id))
 	// if requested id doesnot exist, return 404 not found
@@ -33,7 +29,7 @@ app.get("/api/genres/:id", (req, res) => {
 })
 
 // EndPoint for creating a new Genre
-app.post("/api/genres", (req, res) => {
+router.post("/", (req, res) => {
 	// Generate id for the genre
 	const id = Genres[Genres.length-1].Gid + 1
 	// validate the new Genre Name
@@ -51,7 +47,7 @@ app.post("/api/genres", (req, res) => {
 })
 
 // EndPoint for updating existing Genres
-app.put("/api/genres/:id", (req, res) => {
+router.put("/:id", (req, res) => {
 	// check whether the requested id exists
 	const genre = Genres.find(i => i.Gid === parseInt(req.params.id))
 	// if requested id doesnot exist, return 404 not found
@@ -70,7 +66,7 @@ app.put("/api/genres/:id", (req, res) => {
 })
 
 // EndPoint for deleting existing Genres
-app.delete("/api/genres/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
 	// check whether the requested id exists
 	const genre = Genres.find(i => i.Gid === parseInt(req.params.id))
 	// if requested id doesnot exist, return 404 not found
@@ -83,13 +79,9 @@ app.delete("/api/genres/:id", (req, res) => {
 	res.send(genre)
 })
 
-// Listen
+// export the router object
+module.exports = router
 
-const PORT = process.env.PORT || 3000
-
-app.listen(PORT, () => {
-	console.log(`Listening on Port: ${PORT}`)
-})
 
 // Functions
 
