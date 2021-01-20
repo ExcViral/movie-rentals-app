@@ -1,0 +1,5 @@
+{
+	"db": {
+		"connStr": "mongodb://localhost/vidly-app"
+	} 
+}
