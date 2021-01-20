@@ -2,7 +2,9 @@
 
 Vidly is an imaginary service for renting out movies. This project is a part of *Mosh Hamedani's* Udemy course on *node.js* 
 
-### Genres EndPoint
+
+
+## Genres API
 
 Create a service for managing the list of movie genres. 
 
@@ -35,3 +37,25 @@ So far we have been storing our data in arrays, and all the data was wiped out o
 - [x] Get rid of all the arrays
 - [x] Create a new database for storing all the data for our vidly-app
 - [x] Refactor the code to use our new database while retaining all existing functionalities
+
+
+
+## Customers API
+
+Create a service to manage the customers
+
+Route: `http://vidly.com/api/`
+
+**Rubric**
+
+- [ ] Create a new collection named *customers*
+
+  - [ ] A customer should have the following properties: 
+
+    ​	name: String
+
+    ​	phone: Numbers
+
+    ​	isGold: Boolean
+
+- [ ] 
