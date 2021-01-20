@@ -48,9 +48,9 @@ Route: `http://vidly.com/api/`
 
 **Rubric**
 
-- [ ] Create a new collection named *customers*
+- [x] Create a new collection named *customers*
 
-  - [ ] A customer should have the following properties: 
+  - [x] A customer should have the following properties: 
 
     ​	name: String
 
@@ -58,4 +58,25 @@ Route: `http://vidly.com/api/`
 
     ​	isGold: Boolean
 
-- [ ] 
+- [x] The Customers API should have the following functionalities
+
+  - [x] EndPoint for getting the list of all customers from the database
+  - [x] EndPoint for getting a single customer document using id from the database
+  - [x] EndPoint for creating a customer document in the database
+  - [x] EndPoint for updating a customer document in the database
+  - [x] EndPoint for Deleting a customer document in the database
+
+### Restructure the vidly-app
+
+**To keep our applications maintainable, we should ensure that each module is responsible for only and only one thing. This is called <u>Single Responsibility Principle</u>**
+
+If you look at our app now, the `routes/genres.js`, and the `route/customers.js` have mongoose schemas, route handler functions, and `joi` validation schema+function. 
+
+This makes the files too big ... <span style="color:red"><u>Difficult to Maintain!</u></span> 
+
+Our route handler files should only be responsible to handle the routes, it should not be responsible for declaring schema and creating mongoose model. It should also not have the `Joi` Validator functions.
+
+- [x] Move the Schema and `Joi` validator functions to `models/genres.js` and `models/customers.js`  files.
+- [x] Refactor  `routes/genres.js`, and the `route/customers.js`
+
+Now we have a singular responsibility for  `routes/genres.js`, and the `route/customers.js` and also for `models/genres.js` and `models/customers.js`
