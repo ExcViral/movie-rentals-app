@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 const debug = require('debug')('app:genres')
 const mongoose = require('mongoose')
+const {Genre, validate} = require("../models/genres.js")
 
 // check database status, give it one second so that db gets connected
 setTimeout(() => {
@@ -13,25 +14,6 @@ setTimeout(() => {
 	else if(state == 3) debug("Database is disconnecting")
 }, 1000)
 
-// create schema for genres
-const genreSchema = new mongoose.Schema({
-	name: {
-		type: String,
-		required: true,
-		minlength: 3,
-		trim: true,
-		set: function(s) {
-			let words = s.split(" ")
-			for (let i = 0; i < words.length; i++) {
-			    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-			}
-			return words.join(" ")
-		}
-	}
-})
-
-// compile it into model
-const Genre = mongoose.model("Genre", genreSchema)
 
 // ///////////////////////////////////////////////////////////
 // ROUTE HANDLERS: /api/genres
@@ -73,7 +55,7 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
 	debug("POST /api/genres")
 	// validate the new Genre Name
-	const {value, error} = validateGenreName(req.body)
+	const {value, error} = validate(req.body)
 	// Return 400 for invalid input
 	if(error) return res.status(400).send(error.details[0].message)
 	// otherwise create a genre
@@ -99,7 +81,7 @@ router.put("/:id", async (req, res) => {
 		// return immediately if the input id does not exist
 		if (!genre) return res.status(404).send("Requested Genre Doesnot Exist")
 		// validate the requested update name
-		const {value, error} = validateGenreName(req.body)
+		const {value, error} = validate(req.body)
 		// if invalid input, return 400 bad request
 		if(error) return res.status(400).send(error.details[0].message)
 		// otherwise update the genre and return updated genre to client
@@ -135,21 +117,3 @@ router.delete("/:id", async (req, res) => {
 
 // export the router object
 module.exports = router
-
-// ///////////////////////////////////////////////////////////
-// HELPER FUNCTIONS
-// ///////////////////////////////////////////////////////////
-
-// Function to Validate a Genre Name
-// input: Object with key - name and value -string
-// output: object with keys value and error
-function validateGenreName(name) {
-	
-	const schema = Joi.object({
-		name: Joi.string()
-			.min(3)
-			.required()
-	})
-
-	return schema.validate(name)
-}
