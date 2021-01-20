@@ -102,7 +102,7 @@ router.put("/:id", async (req, res) => {
 		const {value, error} = validateGenreName(req.body)
 		// if invalid input, return 400 bad request
 		if(error) return res.status(400).send(error.details[0].message)
-		// otherwise update the course and return updated course to client
+		// otherwise update the genre and return updated genre to client
 		genre.set({
 			name: value.name
 		})
@@ -120,11 +120,11 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
 	debug(`DELETE /api/genres/${req.params.id}`)
 	try{
-		const course = await Genre.findByIdAndRemove(req.params.id)
-		// if course doesnot exist
-		if (!course) return res.status(404).send("Requested Genre Doesnot Exist")
+		const genre = await Genre.findByIdAndRemove(req.params.id)
+		// if genre doesnot exist
+		if (!genre) return res.status(404).send("Requested Genre Doesnot Exist")
 		// otherwise return deleted genre to the client
-		res.send(course)
+		res.send(genre)
 	}
 	catch(ex) {
 		console.log(ex)
