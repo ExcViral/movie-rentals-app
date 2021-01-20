@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const debug = require("debug")("app:customers")
-const Joi = require("joi")
 const express = require("express")
+const {Customer, validate} = require("../models/customers.js")
 
 const router = express.Router()
 
@@ -13,36 +13,6 @@ setTimeout(() => {
 	else if(state == 2) debug("Database is connecting")
 	else if(state == 3) debug("Database is disconnecting")
 }, 1000)
-
-// create schema for customer document
-const customerSchema = new mongoose.Schema({
-	name: {
-		type: String,
-		required: true,
-		minlength: 3,
-		trim: true,
-		set: function(s) {
-			let words = s.split(" ")
-			for (let i = 0; i < words.length; i++) {
-			    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-			}
-			return words.join(" ")
-		}
-	},
-	phoneNumber: {
-		type: String,
-		required: true,
-		trim: true,
-		match: /([0-9]{10})/
-	},
-	isGold: {
-		type: Boolean,
-		default: false
-		// required: true
-	}
-})
-
-const Customer = mongoose.model("Customer", customerSchema)
 
 
 // ///////////////////////////////////////////////////////////
@@ -56,7 +26,7 @@ router.post("/", async (req, res) => {
 	debug("POST /api/genres/customers")
 	try {
 		// validate the input from the client using joi
-		const {value, error} = validateCustomer(req.body)
+		const {value, error} = validate(req.body)
 		// if invalid input reveived, send 400 bad request
 		if (error) return res.status(400).send(error.details[0].message)
 		// otherwise create a new customer object and send it to client
@@ -111,7 +81,7 @@ router.put("/:id", async (req, res) => {
 	debug(`PUT /api/genres/customers/${req.params.id}`)
 	try {
 		// validate the input from the client using joi
-		const {value, error} = validateCustomer(req.body)
+		const {value, error} = validate(req.body)
 		// if invalid input reveived, send 400 bad request
 		if (error) return res.status(400).send(error.details[0].message)
 		// try to update the customer [UPDATEFIRST]
@@ -149,24 +119,3 @@ router.delete("/:id", async (req, res) => {
 
 // export the router object
 module.exports = router
-
-
-// ///////////////////////////////////////////////////////////
-// HELPER FUNCTIONS
-// ///////////////////////////////////////////////////////////
-
-// Function to Validate a Genre Name
-// input: Object with keys 'name', 'phoneNumber' and 'isGold'
-// output: object with keys 'value' and 'error'
-function validateCustomer(customer_obj) {
-	const schema = Joi.object({
-		name: Joi.string()
-			.required()
-			.min(3),
-		phoneNumber: Joi.string()
-			.required()
-			.pattern(new RegExp('([0-9]{10})')),
-		isGold: Joi.boolean()
-	})
-	return schema.validate(customer_obj)
-}
