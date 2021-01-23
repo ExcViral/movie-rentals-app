@@ -42,11 +42,11 @@ So far we have been storing our data in arrays, and all the data was wiped out o
 
 ## Customers API
 
-Create a service to manage the customers
+Create a service to manage the details of customers
 
-Route: `http://vidly.com/api/`
+Route: `http://vidly.com/api/customers`
 
-**Rubric**
+##### **Rubric**
 
 - [x] Create a new collection named *customers*
 
@@ -80,3 +80,28 @@ Our route handler files should only be responsible to handle the routes, it shou
 - [x] Refactor  `routes/genres.js`, and the `route/customers.js`
 
 Now we have a singular responsibility for  `routes/genres.js`, and the `route/customers.js` and also for `models/genres.js` and `models/customers.js`
+
+
+
+## Movies API
+
+Create a new service to manage the catalogue of movies.
+
+Route: `http://vidly.com/api/movies`
+
+##### Rubric
+
+- [ ] Create a new collection of movies
+- [ ] The shape of movie document should be as follows:
+  - [ ] `title`: String
+  - [ ] `genre`: Genre document should be embedded using **Hybrid Approach**
+  - [ ] `numberInStock`: Number
+  - [ ] `dailyRentalRate`: Number
+- [ ] Implement CRUD operations to manage movies catalogue
+  - [ ] Endpoint to create a new movie
+    - [ ] Receive Json object containing Title of movie, <u>Id of genre</u>, Number in Stock, and Daily rental rate.
+    - [ ] **In hybrid approach, you should take the Id of `genre` from client, and while creating/updating movie, you should query the db to get `genre` from the db, and embed the properties you want along with its original id for reference.** 
+  - [ ] Endpoint to get all movies
+  - [ ] Endpoint to get a single movie by its id
+  - [ ] Endpoint to update a movie
+  - [ ] Endpoint to delete a move by its id
