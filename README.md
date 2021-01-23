@@ -91,17 +91,17 @@ Route: `http://vidly.com/api/movies`
 
 ##### Rubric
 
-- [ ] Create a new collection of movies
-- [ ] The shape of movie document should be as follows:
-  - [ ] `title`: String
-  - [ ] `genre`: Genre document should be embedded using **Hybrid Approach**
-  - [ ] `numberInStock`: Number
-  - [ ] `dailyRentalRate`: Number
-- [ ] Implement CRUD operations to manage movies catalogue
-  - [ ] Endpoint to create a new movie
-    - [ ] Receive Json object containing Title of movie, <u>Id of genre</u>, Number in Stock, and Daily rental rate.
-    - [ ] **In hybrid approach, you should take the Id of `genre` from client, and while creating/updating movie, you should query the db to get `genre` from the db, and embed the properties you want along with its original id for reference.** 
-  - [ ] Endpoint to get all movies
-  - [ ] Endpoint to get a single movie by its id
-  - [ ] Endpoint to update a movie
-  - [ ] Endpoint to delete a move by its id
+- [x] Create a new collection of movies
+- [x] The shape of movie document should be as follows:
+  - [x] `title`: String
+  - [x] `genre`: Genre document should be embedded using **Hybrid Approach**
+  - [x] `numberInStock`: Number
+  - [x] `dailyRentalRate`: Number
+- [x] Implement CRUD operations to manage movies catalogue
+  - [x] Endpoint to create a new movie
+    - [x] Receive Json object containing Title of movie, <u>Id of genre</u>, Number in Stock, and Daily rental rate.
+    - [x] **In hybrid approach, you should take the Id of `genre` from client, and while creating/updating movie, you should query the db to get `genre` from the db, and embed the properties you want along with its original id for reference.** 
+  - [x] Endpoint to get all movies
+  - [x] Endpoint to get a single movie by its id
+  - [x] Endpoint to update a movie
+  - [x] Endpoint to delete a move by its id
