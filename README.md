@@ -105,3 +105,41 @@ Route: `http://vidly.com/api/movies`
   - [x] Endpoint to get a single movie by its id
   - [x] Endpoint to update a movie
   - [x] Endpoint to delete a move by its id
+
+
+
+## Rentals API
+
+- Create a new service to manage the catalogue of movies.
+  
+  Route: `http://vidly.com/api/rentals`
+  
+  ##### Rubric
+  
+    - [x] Create a new collection for rentals
+  
+      - The shape of the rental document should be:
+        - [x] It should have `customer` property 
+          - Donot reuse the customer schema, use **Hybrid Approach** for embedding
+          - Take in `customerId` as input from client, and then we can embed whatever properties we need!
+          - In this case, let's have the customer's `name`, `phoneNumber`, and `isGold` property.
+          - Properties like `isGold` can be used to provide special features to customer, like additional discounts, early access, first priority ... etc
+          - customer property should be required
+        - [x] It should have a `movie` property
+          - Donot reuse the movie schema, use **Hybrid Approach** for embedding
+          - Take in `movieId` as input from client, and then we can embed whatever properties we need!
+          - In this case, let's have the movie's `title`, and `dailyRentalRate` properties
+          - In future, we will use daily rental rate to calculate the `rentalFee`
+          - movie property should be required
+        - [x] It should have a `dateOut` property of type date, and should be required. This property will track when movie was rented. This property should not be sent by client, it should be set on server.
+        - [x] It should have a `dateReturned` property, again of type date, and <u>should be not be required</u>, as it will be set on a later date. This property will track the date of returned. This property should not be sent by client, it should be set on server.
+        - [x] It should have a property called `rentalFee`, of number type, and cannot be less than zero. This property should not be sent by client, it should be set on server.
+        
+      - [x] Also create a `Joi` validate function for rental, we will only be taking `customerId` and `movieId` from the client, so this function should validate whether the `objectIds` sent by client are valid `objectIds`.
+  
+  - The API should have the following endpoints
+  - [x] Endpoint to get the list of all rentals, sort by `dateOut`
+    - [x] Endpoint to create a rental
+      - You should first create a rental document
+      - Then you should decrement the number of DVDs in stock ...
+      - Here we have a **<u>transaction</u>** problem. We have two separate operations. It is possible that after we save the rental document, something goes wrong (eg. server crash, connection to db drops), and we are not able to decrement the stock of DVDs. The second operation will not complete! Here we need **transactions**. With transaction, we can ensure that both these operations will update the state of our data in the database, or none of them will be applied. They should be **`atomic`** The both should complete, or both should roll back.
