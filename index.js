@@ -3,6 +3,8 @@ const app = express()
 const debug = require('debug')("app:main")
 const config = require('config')
 const mongoose = require('mongoose')
+const Joi = require('joi')
+Joi.objectId = require('joi-objectid')(Joi)
 
 // connect to db
 const connStr = config.get("db.connStr")
@@ -16,6 +18,7 @@ mongoose.connect(connStr, { useNewUrlParser: true, useUnifiedTopology: true })
 const genresAPI = require("./routes/genres.js")
 const customersAPI = require("./routes/customers.js")
 const moviesAPI = require("./routes/movies.js")
+const rentalAPI = require("./routes/rentals.js")
 
 app.use(express.json())
 
@@ -23,6 +26,7 @@ app.use(express.json())
 app.use("/api/genres", genresAPI)
 app.use("/api/customers", customersAPI)
 app.use("/api/movies", moviesAPI)
+app.use("/api/rentals", rentalAPI)
 
 
 // Listen
