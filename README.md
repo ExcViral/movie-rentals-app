@@ -231,13 +231,13 @@ Not all users can have all permissions. Certain routes need to be protected, so 
         - [x] If the token is invalid, send 400 Bad Request error to the client with a message that the token is not valid
         - [x] If token is valid, then extract the payload, and populate the `req.user` property, so that further middlewares or route handlers can make use of the payload data
       - [x] If we were able to successfully decode the `jwt` that means user is authorized, and logged in. Now after populating the `req.user` property, we can pass control to the next middleware or route handler function by calling `next()`
-- [ ] Create a middleware function to verify that a user is Admin
-  - [ ] Some routes are to be protected such that only users with Admin privileges can access them. We will include the properties related to roles in our `jwt` payload, so that we can directly authorize the Admin user without having to look up into our database to check if the user is Admin.
-  - [ ] This middleware must be executed only after the first authorization middleware has been executed, i.e. the user is verified that he is logged in with a valid `jwt`, and the `req.user` property is populated
+- [x] Create a middleware function to verify that a user is Admin
+  - [x] Some routes are to be protected such that only users with Admin privileges can access them. We will include the properties related to roles in our `jwt` payload, so that we can directly authorize the Admin user without having to look up into our database to check if the user is Admin.
+  - [x] This middleware must be executed only after the first authorization middleware has been executed, i.e. the user is verified that he is logged in with a valid `jwt`, and the `req.user` property is populated
   - Logic to be implemented:
-    - [ ] Since we have an isAdmin property (Boolean) in our User's document, all we have to do is check if the isAdmin property in `req.user` (populated by first authorization middleware) set to true (if true, user is admin)
-      - [ ] If isAdmin = False, it means that the user is not an Admin, and he is not supposed to access this route, therefore terminate the request and send 403 Forbidden error with message that access denied
-      - [ ] If isAdmin = True, simply pass the control to the next middleware / route handler
+    - [x] Since we have an isAdmin property (Boolean) in our User's document, all we have to do is check if the isAdmin property in `req.user` (populated by first authorization middleware) set to true (if true, user is admin)
+      - [x] If isAdmin = False, it means that the user is not an Admin, and he is not supposed to access this route, therefore terminate the request and send 403 Forbidden error with message that access denied
+      - [x] If isAdmin = True, simply pass the control to the next middleware / route handler
 - [ ] Protecting the Routes
   - [ ] **Genres API**
     - [ ] Public access allowed (no login required)
