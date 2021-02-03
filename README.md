@@ -160,15 +160,15 @@ That is verifying credentials at the time on logging in.
 
   Route: `http://vidly.com/api/users`
 
-  - [ ] Create a new collection for users
-    - [ ] The shape of the `User` document should be:
-      - [ ] It should have `username` property. <u>For the username property, in the Schema Type object, **you must set unique property to true**.</u> This is to ensure that we don't store two documents with same username in our database.
-      - [ ] It should have an `email` property. <u>For the email property, in the Schema Type object, **you must set unique property to true**.</u> This is to ensure that we don't store two documents with same email in our database.
-      - [ ] It should have a `password` property. **<u>You must store only the hash of the password, not the plain-text password</u>**
-      - [ ] It should have `isAdmin` property. This is a Boolean field, and it must be used for protecting some routes such that only admins are allowed to access them.
-      - [ ] It should have its own method for generating a `Json Web Token (JWT)` for a User. As the payload of `JWT`, you should pass an object with properties `_id` and `isAdmin` [**Encapsulate JWT Generation Logic in Mongoose Models**]
-        - [ ] Use the `jsonwebtoken` package to generate `JWT`
-        - [ ] **<u>The private or secret key used to generate `JWT` must be read from an environment variable using the `config` module</u>** [Never store App Secrets in File Itself, Store them in environment variables on server]
+  - [x] Create a new collection for users
+    - [x] The shape of the `User` document should be:
+      - [x] It should have `username` property. <u>For the username property, in the Schema Type object, **you must set unique property to true**.</u> This is to ensure that we don't store two documents with same username in our database.
+      - [x] It should have an `email` property. <u>For the email property, in the Schema Type object, **you must set unique property to true**.</u> This is to ensure that we don't store two documents with same email in our database.
+      - [x] It should have a `password` property. **<u>You must store only the hash of the password, not the plain-text password</u>**
+      - [x] It should have `isAdmin` property. This is a Boolean field, and it must be used for protecting some routes such that only admins are allowed to access them.
+      - [x] It should have its own method for generating a `Json Web Token (JWT)` for a User. As the payload of `JWT`, you should pass an object with properties `_id` and `isAdmin` [**Encapsulate JWT Generation Logic in Mongoose Models**]
+        - [x] Use the `jsonwebtoken` package to generate `JWT`
+        - [x] **<u>The private or secret key used to generate `JWT` must be read from an environment variable using the `config` module</u>** [Never store App Secrets in File Itself, Store them in environment variables on server]
     - [ ] The API should have the following endpoints:
       - [ ] Endpoint for registering a new `user`:
         - [ ] An Http post request must be sent to the route `/api/users`
