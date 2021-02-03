@@ -239,15 +239,15 @@ Not all users can have all permissions. Certain routes need to be protected, so 
       - [x] If isAdmin = False, it means that the user is not an Admin, and he is not supposed to access this route, therefore terminate the request and send 403 Forbidden error with message that access denied
       - [x] If isAdmin = True, simply pass the control to the next middleware / route handler
 - [ ] Protecting the Routes
-  - [ ] **Genres API**
-    - [ ] Public access allowed (no login required)
-      - [ ] EndPoint for getting the list of all Genres
-      - [ ] EndPoint for getting a single Genre
-    - [ ] Only Logged In Users should be allowed to access these routes (Apply first authorization middleware `auth.js`)
-      - [ ] EndPoint for creating a new Genre
-      - [ ] EndPoint for updating existing Genres
-    - [ ] Only users with Admin privileges should be allowed to access these routes (Apply `auth.js` and `admin.js` ) 
-      - [ ] EndPoint for deleting existing Genres
+  - [x] **Genres API**
+    - [x] Public access allowed (no login required)
+      - [x] EndPoint for getting the list of all Genres
+      - [x] EndPoint for getting a single Genre
+    - [x] Only Logged In Users should be allowed to access these routes (Apply first authorization middleware `auth.js`)
+      - [x] EndPoint for creating a new Genre
+      - [x] EndPoint for updating existing Genres
+    - [x] Only users with Admin privileges should be allowed to access these routes (Apply `auth.js` and `admin.js` ) 
+      - [x] EndPoint for deleting existing Genres
   - [ ] **Customers API**
     - [ ] Only Logged In Users should be allowed to access these routes (Apply first authorization middleware `auth.js`)
       - [ ] EndPoint for getting the list of all customers from the database

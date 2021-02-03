@@ -4,6 +4,8 @@ const router = express.Router()
 const debug = require('debug')('app:genres')
 const mongoose = require('mongoose')
 const {Genre, validate} = require("../models/genres.js")
+const auth = require('../middlewares/auth.js')
+const adminAuth = require('../middlewares/admin.js')
 
 // check database status, give it one second so that db gets connected
 setTimeout(() => {
@@ -52,7 +54,7 @@ router.get("/:id", async (req, res) => {
 })
 
 // EndPoint for creating a new Genre
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
 	debug("POST /api/genres")
 	// validate the new Genre Name
 	const {value, error} = validate(req.body)
@@ -74,8 +76,8 @@ router.post("/", async (req, res) => {
 })
 
 // EndPoint for updating existing Genres
-router.put("/:id", async (req, res) => {
-	debug(`PUT /api/genres/${req.params.id}`)	
+router.put("/:id", auth, async (req, res) => {
+	debug(`PUT /api/genres/${req.params.id}`)
 	try {
 		let genre = await Genre.findById(req.params.id)
 		// return immediately if the input id does not exist
@@ -99,7 +101,7 @@ router.put("/:id", async (req, res) => {
 })
 
 // EndPoint for deleting existing Genres
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [auth, adminAuth], async (req, res) => {
 	debug(`DELETE /api/genres/${req.params.id}`)
 	try{
 		const genre = await Genre.findByIdAndRemove(req.params.id)
