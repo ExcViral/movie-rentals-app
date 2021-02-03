@@ -238,7 +238,7 @@ Not all users can have all permissions. Certain routes need to be protected, so 
     - [x] Since we have an isAdmin property (Boolean) in our User's document, all we have to do is check if the isAdmin property in `req.user` (populated by first authorization middleware) set to true (if true, user is admin)
       - [x] If isAdmin = False, it means that the user is not an Admin, and he is not supposed to access this route, therefore terminate the request and send 403 Forbidden error with message that access denied
       - [x] If isAdmin = True, simply pass the control to the next middleware / route handler
-- [ ] Protecting the Routes
+- [x] Protecting the Routes
   - [x] **Genres API**
     - [x] Public access allowed (no login required)
       - [x] EndPoint for getting the list of all Genres
@@ -263,14 +263,14 @@ Not all users can have all permissions. Certain routes need to be protected, so 
       - [x] Endpoint to create a new movie
       - [x] Endpoint to update a movie
       - [x] Endpoint to delete a move by its id
-  - [ ] **Rentals API**
-    - [ ] Only Logged In Users should be allowed to access these routes (Apply first authorization middleware `auth.js`)
-      - [ ] Endpoint to get the list of all rentals
-      - [ ] Endpoint to create a rental
-  - [ ] **Users API**
-    - [ ] Public access allowed (no login required)
-      - [ ] EndPoint to create a new user
-    - [ ] Only Logged In Users should be allowed to access these routes (Apply first authorization middleware `auth.js`)
-      - [ ] EndPoint to access user's personal profile
-    - [ ] Only users with Admin privileges should be allowed to access these routes (Apply `auth.js` and `admin.js` ) 
-      - [ ] EndPoint to access all users general profiles
+  - [x] **Rentals API**
+    - [x] Only Logged In Users should be allowed to access these routes (Apply first authorization middleware `auth.js`)
+      - [x] Endpoint to get the list of all rentals
+      - [x] Endpoint to create a rental
+  - [x] **Users API**
+    - [x] Public access allowed (no login required)
+      - [x] EndPoint to create a new user
+    - [x] Only Logged In Users should be allowed to access these routes (Apply first authorization middleware `auth.js`)
+      - [x] EndPoint to access user's personal profile
+    - [x] Only users with Admin privileges should be allowed to access these routes (Apply `auth.js` and `admin.js` ) 
+      - [x] EndPoint to access all users general profiles

@@ -5,6 +5,7 @@ const router = express.Router()
 const { Rental, validate } = require('../models/rentals.js')
 const { Customer } = require('../models/customers.js')
 const { Movie } = require('../models/movies.js')
+const auth = require('../middlewares/auth.js')
 
 const Fawn = require('fawn')
 Fawn.init(mongoose)
@@ -25,7 +26,7 @@ setTimeout(() => {
 // CREATE
 
 // Endpoint to create a rental document
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     debug("POST /api/rentals")
     try {
         // first Joi validate the object received from the client
@@ -90,8 +91,8 @@ router.post('/', async (req, res) => {
 // READ
 
 // Endpoint to get all rental documents
-router.get('/', async (req, res) => {
-    debug("GET /api/rentals")
+router.get('/', auth, async (req, res) => {
+    debug("GET /api/rentals")   
     try {
         // query the db
         const rentals = await Rental.find({}).sort("-dateOut")
