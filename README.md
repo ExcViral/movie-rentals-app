@@ -197,20 +197,20 @@ That is verifying credentials at the time on logging in.
 
   Route: `http://vidly.com/api/login`
 
-  - [ ] The API should have a single End Point to allow users to log in
-    - [ ] The module for handling this logic must be named `auth.js`
-    - [ ] An Http post request must be sent to `/api/login`
-    - [ ] We will be using an Http Post request here, because we are <u>creating</u> a new login request or a login command.
-    - [ ] Another reason for using Http Post request is sometimes we want to store all individual logins in our database. So it makes perfect sense to use Post request here.
-    - [ ] The process of logging in a user should be:
-      - [ ] Client must send in a valid Json object with properties username and password. We can access this object from `req.body`
-      - [ ] First validate the `req.body` using `Joi`, if invalid object, return 400 Bad request error and terminate request
-      - [ ] Then check if the username exists in our database, if not then terminate the request with 400 Bad request error, but <u>send a vague message saying username or password invalid.</u> We must never specify which one is wrong.
-      - [ ] If the username exists in our database, we compare the verify if the hash of the password sent by client matches with the hash stored in our database
-        - [ ] If the hash doesn't match, we terminate the request with 400 Bad request error, but <u>send a vague message saying username or password invalid.</u> We must never specify which one is wrong.
-        - [ ] If the hash matches, we generate a new `JWT` for this user using the method we defined in the User Schema
-      - [ ] Finally complete the login process by sending the `JWT` to the client, along with a message that login is successful.
-        - [ ] The `JWT` must be sent in an http header under custom name like `x-auth-token`, so that the front-end client software can save this `JWT` for further authorisation in order to be able to access protected routes.
+  - [x] The API should have a single End Point to allow users to log in
+    - [x] The module for handling this logic must be named `auth.js`
+    - [x] An Http post request must be sent to `/api/login`
+    - [x] We will be using an Http Post request here, because we are <u>creating</u> a new login request or a login command.
+    - [x] Another reason for using Http Post request is sometimes we want to store all individual logins in our database. So it makes perfect sense to use Post request here.
+    - [x] The process of logging in a user should be:
+      - [x] Client must send in a valid Json object with properties username and password. We can access this object from `req.body`
+      - [x] First validate the `req.body` using `Joi`, if invalid object, return 400 Bad request error and terminate request
+      - [x] Then check if the username exists in our database, if not then terminate the request with 400 Bad request error, but <u>send a vague message saying username or password invalid.</u> We must never specify which one is wrong.
+      - [x] If the username exists in our database, we compare the verify if the hash of the password sent by client matches with the hash stored in our database
+        - [x] If the hash doesn't match, we terminate the request with 400 Bad request error, but <u>send a vague message saying username or password invalid.</u> We must never specify which one is wrong.
+        - [x] If the hash matches, we generate a new `JWT` for this user using the method we defined in the User Schema
+      - [x] Finally complete the login process by sending the `JWT` to the client, along with a message that login is successful.
+        - [x] The `JWT` must be sent in an http header under custom name like `x-auth-token`, so that the front-end client software can save this `JWT` for further authorisation in order to be able to access protected routes.
 
 
 
