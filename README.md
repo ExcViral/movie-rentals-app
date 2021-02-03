@@ -248,14 +248,14 @@ Not all users can have all permissions. Certain routes need to be protected, so 
       - [x] EndPoint for updating existing Genres
     - [x] Only users with Admin privileges should be allowed to access these routes (Apply `auth.js` and `admin.js` ) 
       - [x] EndPoint for deleting existing Genres
-  - [ ] **Customers API**
-    - [ ] Only Logged In Users should be allowed to access these routes (Apply first authorization middleware `auth.js`)
-      - [ ] EndPoint for getting the list of all customers from the database
-      - [ ] EndPoint for getting a single customer document using id from the database
-      - [ ] EndPoint for creating a customer document in the database
-      - [ ] EndPoint for updating a customer document in the database
-    - [ ] Only users with Admin privileges should be allowed to access these routes (Apply `auth.js` and `admin.js` ) 
-      - [ ] EndPoint for Deleting a customer document in the database
+  - [x] **Customers API**
+    - [x] Only Logged In Users should be allowed to access these routes (Apply first authorization middleware `auth.js`)
+      - [x] EndPoint for getting the list of all customers from the database
+      - [x] EndPoint for getting a single customer document using id from the database
+      - [x] EndPoint for creating a customer document in the database
+      - [x] EndPoint for updating a customer document in the database
+    - [x] Only users with Admin privileges should be allowed to access these routes (Apply `auth.js` and `admin.js` ) 
+      - [x] EndPoint for Deleting a customer document in the database
   - [ ] **Movies API**
     - [ ] Public access allowed (no login required)
       - [ ] Endpoint to get all movies

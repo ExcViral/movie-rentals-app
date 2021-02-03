@@ -2,7 +2,8 @@ const mongoose = require("mongoose")
 const debug = require("debug")("app:customers")
 const express = require("express")
 const {Customer, validate} = require("../models/customers.js")
-
+const auth = require('../middlewares/auth.js')
+const adminAuth = require('../middlewares/admin.js')
 const router = express.Router()
 
 // check database status, give it one second so that db gets connected
@@ -22,7 +23,7 @@ setTimeout(() => {
 // CREATE
 
 // create a new customer
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
 	debug("POST /api/genres/customers")
 	try {
 		// validate the input from the client using joi
@@ -44,7 +45,7 @@ router.post("/", async (req, res) => {
 // READ
 
 // handle request for all customers
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
 	debug("GET /api/genres/customers")
 	try {
 		const customers = await Customer.find({}).sort("name")
@@ -58,7 +59,7 @@ router.get("/", async (req, res) => {
 })
 
 // handle request for a single customer
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
 	debug(`GET /api/genres/customers/${req.params.id}`)
 	try {
 		const customer = await Customer.findById(req.params.id)
@@ -77,7 +78,7 @@ router.get("/:id", async (req, res) => {
 // UPDATE
 
 // handle request for updating a customer
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
 	debug(`PUT /api/genres/customers/${req.params.id}`)
 	try {
 		// validate the input from the client using joi
@@ -101,7 +102,7 @@ router.put("/:id", async (req, res) => {
 // DELETE
 
 // handle request to delete a customer
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, adminAuth, async (req, res) => {
 	debug(`DELETE /api/genres/customers/${req.params.id}`)
 	try {
 		const customer = await Customer.findByIdAndRemove(req.params.id)
