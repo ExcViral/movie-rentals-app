@@ -222,15 +222,15 @@ Not all users can have all permissions. Certain routes need to be protected, so 
 
 <u>The best way to handle this is to put this authorization logic in a middleware function. Then we apply this middleware function to the route handlers that need to be protected. This middleware function sits in front of our route in the request-response pipeline, and only allows authorized users to pass through.</u>
 
-- [ ] Create a middleware function to verify that a user is logged in
-  - [ ] Once a user logs in, we send him a `jwt`, from then on, every time a user accesses any route, he is supposed to send this `jwt` as a part of his request headers. In this middleware, we verify the same.
+- [x] Create a middleware function to verify that a user is logged in
+  - [x] Once a user logs in, we send him a `jwt`, from then on, every time a user accesses any route, he is supposed to send this `jwt` as a part of his request headers. In this middleware, we verify the same.
   - Logic to be implemented:
-    - [ ] The `jwt` token should be available under `req.header` under the name `x-auth-token`. Try to read this token.
-      - [ ] If token is not found, terminate the request and send 401 request denied error.
-      - [ ] Otherwise, decode the token using the `jsonwebtoken` module.
-        - [ ] If the token is invalid, send 400 Bad Request error to the client with a message that the token is not valid
-        - [ ] If token is valid, then extract the payload, and populate the `req.user` property, so that further middlewares or route handlers can make use of the payload data
-      - [ ] If we were able to successfully decode the `jwt` that means user is authorized, and logged in. Now after populating the `req.user` property, we can pass control to the next middleware or route handler function by calling `next()`
+    - [x] The `jwt` token should be available under `req.header` under the name `x-auth-token`. Try to read this token.
+      - [x] If token is not found, terminate the request and send 401 request denied error.
+      - [x] Otherwise, decode the token using the `jsonwebtoken` module.
+        - [x] If the token is invalid, send 400 Bad Request error to the client with a message that the token is not valid
+        - [x] If token is valid, then extract the payload, and populate the `req.user` property, so that further middlewares or route handlers can make use of the payload data
+      - [x] If we were able to successfully decode the `jwt` that means user is authorized, and logged in. Now after populating the `req.user` property, we can pass control to the next middleware or route handler function by calling `next()`
 - [ ] Create a middleware function to verify that a user is Admin
   - [ ] Some routes are to be protected such that only users with Admin privileges can access them. We will include the properties related to roles in our `jwt` payload, so that we can directly authorize the Admin user without having to look up into our database to check if the user is Admin.
   - [ ] This middleware must be executed only after the first authorization middleware has been executed, i.e. the user is verified that he is logged in with a valid `jwt`, and the `req.user` property is populated
