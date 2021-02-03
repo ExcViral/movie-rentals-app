@@ -169,29 +169,29 @@ That is verifying credentials at the time on logging in.
       - [x] It should have its own method for generating a `Json Web Token (JWT)` for a User. As the payload of `JWT`, you should pass an object with properties `_id` and `isAdmin` [**Encapsulate JWT Generation Logic in Mongoose Models**]
         - [x] Use the `jsonwebtoken` package to generate `JWT`
         - [x] **<u>The private or secret key used to generate `JWT` must be read from an environment variable using the `config` module</u>** [Never store App Secrets in File Itself, Store them in environment variables on server]
-    - [ ] The API should have the following endpoints:
-      - [ ] Endpoint for registering a new `user`:
-        - [ ] An Http post request must be sent to the route `/api/users`
-        - [ ] **HTTP Post request because we are creating a new resource, In this case, a new user.** 
-        - [ ] The process of registering a new user should be:
-          - [ ] Client must send a json object in HTTP Post request containing properties `username`, `email`, and `password`. We can access this object from `req.body`
-          - [ ] First validate the `req.body` using `Joi`, if invalid object, return 400 Bad request error and terminate request
-          - [ ] Then check if the username or email already exist in our database, if they do, return 400 Bad request, and ask client to send new username or email and terminate request
-          - [ ] If everything is okay, hash the password using `bcrypt`
-            - [ ] first generate a random `salt` using `bcrypt` (async)
-            - [ ] then hash the plain-text password using `bcrypt` (async), then overwrite the plain-text password in the User object with its hash.
-          - [ ] Then save the User to our database
-          - [ ] Then generate a new `JWT` for this user using the method we defined in the User Schema
-          - [ ] Finally complete the registration process by sending the `JWT` to the client, along with his registered email and username (don't send back hashed password)
-            - [ ] The `JWT` must be sent in an http header under custom name like `x-auth-token`, so that the front-end client software can save this `JWT` for further authorisation in order to be able to access protected routes.
-      - [ ] Endpoint for accessing a `user's` profile:
-        - [ ] A logged in user should be able to access his profile using the route `/api/users/me`
-        - [ ] First check if the user is authorized to access the route using the authorization middleware. (if he sends a valid `JWT` in his request's header, he should be authorized.)
-        - [ ] Decode the payload sent by client in the `JWT`, read the `_id` of user from decoded payload, and fetch details from database and send it to the client (exclude password field).
-      - [ ] Endpoint for accessing all user's details <span style="color:red">[PROTECTED ROUTE: ADMIN ONLY]</span>: 
-        - [ ] Only a logged in user with admin privileges should be able to access this route: `/api/users/all`
-        - [ ] First check if the user is authorized to access the route using the authorization middlewares. (if he sends a valid `JWT` in his request's header and he is an Admin, he should be authorized.)
-        - [ ] Fetch all the users and send the data to the client.
+    - [x] The API should have the following endpoints:
+      - [x] Endpoint for registering a new `user`:
+        - [x] An Http post request must be sent to the route `/api/users`
+        - [x] **HTTP Post request because we are creating a new resource, In this case, a new user.** 
+        - [x] The process of registering a new user should be:
+          - [x] Client must send a json object in HTTP Post request containing properties `username`, `email`, and `password`. We can access this object from `req.body`
+          - [x] First validate the `req.body` using `Joi`, if invalid object, return 400 Bad request error and terminate request
+          - [x] Then check if the username or email already exist in our database, if they do, return 400 Bad request, and ask client to send new username or email and terminate request
+          - [x] If everything is okay, hash the password using `bcrypt`
+            - [x] first generate a random `salt` using `bcrypt` (async)
+            - [x] then hash the plain-text password using `bcrypt` (async), then overwrite the plain-text password in the User object with its hash.
+          - [x] Then save the User to our database
+          - [x] Then generate a new `JWT` for this user using the method we defined in the User Schema
+          - [x] Finally complete the registration process by sending the `JWT` to the client, along with his registered email and username (don't send back hashed password)
+            - [x] The `JWT` must be sent in an http header under custom name like `x-auth-token`, so that the front-end client software can save this `JWT` for further authorisation in order to be able to access protected routes.
+      - [x] Endpoint for accessing a `user's` profile:
+        - [x] A logged in user should be able to access his profile using the route `/api/users/me`
+        - [x] First check if the user is authorized to access the route using the authorization middleware. (if he sends a valid `JWT` in his request's header, he should be authorized.)
+        - [x] Decode the payload sent by client in the `JWT`, read the `_id` of user from decoded payload, and fetch details from database and send it to the client (exclude password field).
+      - [x] Endpoint for accessing all user's details <span style="color:red">[PROTECTED ROUTE: ADMIN ONLY]</span>: 
+        - [x] Only a logged in user with admin privileges should be able to access this route: `/api/users/all`
+        - [x] First check if the user is authorized to access the route using the authorization middlewares. (if he sends a valid `JWT` in his request's header and he is an Admin, he should be authorized.)
+        - [x] Fetch all the users and send the data to the client.
 
 - **Create a new service for allowing users to log in**
 
