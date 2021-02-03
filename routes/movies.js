@@ -4,6 +4,7 @@ const express = require('express')
 const router = express.Router()
 const { Movie, validate } = require('../models/movies.js')
 const { Genre } = require('../models/genres.js')
+const auth = require('../middlewares/auth.js')
 
 // check database status, give it one second so that db gets connected
 setTimeout(() => {
@@ -21,7 +22,7 @@ setTimeout(() => {
 // CREATE
 
 // handle request to create a movie object
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
 	debug("POST /api/movies")
 	try {
 		// req.body should contain a json object with minimum [ title and id of genre ]
@@ -120,7 +121,7 @@ router.get("/:id", async (req, res) => {
 // UPDATE
 
 // update numberInStock
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
 	debug(`PUT /api/movies/${req.params.id}`)
 	try {
 		// first validate the req.body
@@ -152,7 +153,7 @@ router.put("/:id", async (req, res) => {
 })
 
 // DELETE 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
 	debug(`DELETE /api/movies/${req.params.id}`)
 	try {
 		// find the movie by id and delete it
