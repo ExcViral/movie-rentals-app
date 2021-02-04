@@ -26,6 +26,9 @@ mongoose
 		console.log('Could not connect to mongoDB', err);
 	});
 
+// middleware imports
+const errorMiddleware = require('./middlewares/error.js');
+
 // router imports
 const genresAPI = require('./routes/genres.js');
 const customersAPI = require('./routes/customers.js');
@@ -44,6 +47,8 @@ app.use('/api/movies', moviesAPI);
 app.use('/api/rentals', rentalsAPI);
 app.use('/api/users', usersAPI);
 app.use('/api/login', authAPI);
+// register the error middleware
+app.use(errorMiddleware);
 
 // Listen
 

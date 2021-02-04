@@ -22,7 +22,7 @@ setTimeout(() => {
 // CREATE
 
 // handle request to create a movie object
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, async (req, res, next) => {
 	debug('POST /api/movies');
 	try {
 		// req.body should contain a json object with minimum [ title and id of genre ]
@@ -57,16 +57,14 @@ router.post('/', auth, async (req, res) => {
 		// finally return the movie document to the client
 		res.send(movie);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // READ
 
 // get all movies
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
 	debug('GET /api/movies');
 	try {
 		// get all the movies
@@ -74,36 +72,30 @@ router.get('/', async (req, res) => {
 		// send the movies
 		res.send(movies);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // // get all movies with pagination
 // // supports route: /api/movies?page=1&size=10
-// router.get("/", async (req, res) => {
-// 	debug("GET /api/movies")
+// router.get('/', async (req, res, next) => {
+// 	debug('GET /api/movies');
 // 	try {
-// 		let { page, size } = req.query
-// 		page = parseInt(page)
-// 		size = parseInt(size)
-// 		debug(page, size)
-// 		const movies = await Movie
-// 						.find()
-// 						.skip((page - 1)*size)
-// 						.limit(size)
-// 		res.send(movies)
+// 		let { page, size } = req.query;
+// 		page = parseInt(page);
+// 		size = parseInt(size);
+// 		debug(page, size);
+// 		const movies = await Movie.find()
+// 			.skip((page - 1) * size)
+// 			.limit(size);
+// 		res.send(movies);
+// 	} catch (ex) {
+// 		next(ex);
 // 	}
-// 	catch(ex) {
-// 		console.log(ex)
-// 		// send 500 internal server error
-// 		res.status(500).send("Sorry, we are unable to process your request at the moment. We regret the inconvenience caused, Please retry later ... ")
-// 	}
-// })
+// });
 
 // get movie by id
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
 	debug(`GET /api/movies/${req.params.id}`);
 	try {
 		// try to find movie
@@ -116,16 +108,14 @@ router.get('/:id', async (req, res) => {
 		// otherwise send the movie to the client
 		res.send(movie);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // UPDATE
 
 // update numberInStock
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, async (req, res, next) => {
 	debug(`PUT /api/movies/${req.params.id}`);
 	try {
 		// first validate the req.body
@@ -158,14 +148,12 @@ router.put('/:id', auth, async (req, res) => {
 		// send the updated movie to the client
 		res.send(movie);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // DELETE
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', auth, async (req, res, next) => {
 	debug(`DELETE /api/movies/${req.params.id}`);
 	try {
 		// find the movie by id and delete it
@@ -180,9 +168,7 @@ router.delete('/:id', auth, async (req, res) => {
 		// By convention, send the deleted movie to the client for reference
 		res.send(movie);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 

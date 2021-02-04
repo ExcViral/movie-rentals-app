@@ -290,5 +290,5 @@ In our current implementation, every route handler has a `try-catch` block. This
 
 #### Refactor the code to use Express Error Middleware
 
-- [ ] Replace the code in every route handler with a call to `next()` and pass the exception object to this method.
-- [ ] Import this error middleware function in the `index.js` file and register it after all the route handler middlewares.
+- [x] Replace the code in every route handler with a call to `next()` and pass the exception object to this method.
+- [x] Import this error middleware function in the `index.js` file and register it after all the route handler middlewares.

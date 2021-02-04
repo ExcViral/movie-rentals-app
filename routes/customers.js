@@ -22,7 +22,7 @@ setTimeout(() => {
 // CREATE
 
 // create a new customer
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, async (req, res, next) => {
 	debug('POST /api/genres/customers');
 	try {
 		// validate the input from the client using joi
@@ -34,29 +34,25 @@ router.post('/', auth, async (req, res) => {
 		customer = await customer.save();
 		res.send(customer);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error to client
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // READ
 
 // handle request for all customers
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, async (req, res, next) => {
 	debug('GET /api/genres/customers');
 	try {
 		const customers = await Customer.find({}).sort('name');
 		res.send(customers);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error to client
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // handle request for a single customer
-router.get('/:id', auth, async (req, res) => {
+router.get('/:id', auth, async (req, res, next) => {
 	debug(`GET /api/genres/customers/${req.params.id}`);
 	try {
 		const customer = await Customer.findById(req.params.id);
@@ -70,16 +66,14 @@ router.get('/:id', auth, async (req, res) => {
 		// otherwise return customer document to the client
 		res.send(customer);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error to client
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // UPDATE
 
 // handle request for updating a customer
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, async (req, res, next) => {
 	debug(`PUT /api/genres/customers/${req.params.id}`);
 	try {
 		// validate the input from the client using joi
@@ -100,16 +94,14 @@ router.put('/:id', auth, async (req, res) => {
 		// else send the customer document to the client
 		res.send(customer);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error to client
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // DELETE
 
 // handle request to delete a customer
-router.delete('/:id', auth, adminAuth, async (req, res) => {
+router.delete('/:id', auth, adminAuth, async (req, res, next) => {
 	debug(`DELETE /api/genres/customers/${req.params.id}`);
 	try {
 		const customer = await Customer.findByIdAndRemove(req.params.id);
@@ -123,9 +115,7 @@ router.delete('/:id', auth, adminAuth, async (req, res) => {
 		// otherwise return deleted customer to the client
 		res.send(customer);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error to client
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 

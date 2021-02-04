@@ -20,7 +20,7 @@ setTimeout(() => {
 // ///////////////////////////////////////////////////////////
 
 // handle login request
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
 	debug('POST /api/login');
 	try {
 		// Joi validate username and password
@@ -45,9 +45,7 @@ router.post('/', async (req, res) => {
 		const token = user.genJWT();
 		res.header('x-auth-token', token).send('login successful');
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 

@@ -21,20 +21,18 @@ setTimeout(() => {
 // ///////////////////////////////////////////////////////////
 
 // // EndPoint for getting the list of all Genres
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
 	debug('GET /api/genres');
 	try {
 		const genres = await Genre.find({});
 		res.send(genres);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request!');
+		next(ex);
 	}
 });
 
 // EndPoint for getting a single Genre
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
 	debug(`GET /api/genres/${req.params.id}`);
 	try {
 		const genre = await Genre.findById(req.params.id);
@@ -43,15 +41,13 @@ router.get('/:id', async (req, res) => {
 		// otherwise return genre to the client
 		res.send(genre);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 	// getGenreByID(req.params.id, res)
 });
 
 // EndPoint for creating a new Genre
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, async (req, res, next) => {
 	debug('POST /api/genres');
 	// validate the new Genre Name
 	const { value, error } = validate(req.body);
@@ -65,14 +61,12 @@ router.post('/', auth, async (req, res) => {
 		genre = await genre.save();
 		res.send(genre);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // EndPoint for updating existing Genres
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', auth, async (req, res, next) => {
 	debug(`PUT /api/genres/${req.params.id}`);
 	try {
 		let genre = await Genre.findById(req.params.id);
@@ -89,14 +83,12 @@ router.put('/:id', auth, async (req, res) => {
 		genre = await genre.save();
 		res.send(genre);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // EndPoint for deleting existing Genres
-router.delete('/:id', [auth, adminAuth], async (req, res) => {
+router.delete('/:id', [auth, adminAuth], async (req, res, next) => {
 	debug(`DELETE /api/genres/${req.params.id}`);
 	try {
 		const genre = await Genre.findByIdAndRemove(req.params.id);
@@ -105,9 +97,7 @@ router.delete('/:id', [auth, adminAuth], async (req, res) => {
 		// otherwise return deleted genre to the client
 		res.send(genre);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 

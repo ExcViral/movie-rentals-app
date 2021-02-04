@@ -24,7 +24,7 @@ setTimeout(() => {
 // CREATE
 
 // handle request to register user
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
 	debug('POST /api/users');
 	try {
 		// validate the input received from client
@@ -64,16 +64,14 @@ router.post('/', async (req, res) => {
 			.header('x-auth-token', token)
 			.send(_.pick(user, ['_id', 'username', 'email']));
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // READ
 
 // handle request to get user's personal profile
-router.get('/me', auth, async (req, res) => {
+router.get('/me', auth, async (req, res, next) => {
 	debug(`GET /api/users/${req.user._id}`);
 	try {
 		// try to get the id from the db but exclude database field
@@ -84,23 +82,19 @@ router.get('/me', auth, async (req, res) => {
 		// otherwise return the user data to the client
 		res.send(user);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 
 // [ADMIN ONLY] handle request to get all users' profiles
-router.get('/all', [auth, adminAuth], async (req, res) => {
+router.get('/all', [auth, adminAuth], async (req, res, next) => {
 	debug(`GET /api/users/all`);
 	try {
 		// try to get the id from the db but exclude database field
 		const users = await User.find({}).select('-password');
 		res.send(users);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request');
+		next(ex);
 	}
 });
 

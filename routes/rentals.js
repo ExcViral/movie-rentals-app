@@ -26,7 +26,7 @@ setTimeout(() => {
 // CREATE
 
 // Endpoint to create a rental document
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, async (req, res, next) => {
 	debug('POST /api/rentals');
 	try {
 		// first Joi validate the object received from the client
@@ -89,16 +89,14 @@ router.post('/', auth, async (req, res) => {
 
 		res.send(rental);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request!');
+		next(ex);
 	}
 });
 
 // READ
 
 // Endpoint to get all rental documents
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, async (req, res, next) => {
 	debug('GET /api/rentals');
 	try {
 		// query the db
@@ -106,9 +104,7 @@ router.get('/', auth, async (req, res) => {
 		// send the result
 		res.send(rentals);
 	} catch (ex) {
-		console.log(ex);
-		// send 500 internal server error
-		res.status(500).send('Sorry, we could not process your request!');
+		next(ex);
 	}
 });
 
