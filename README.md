@@ -274,3 +274,16 @@ Not all users can have all permissions. Certain routes need to be protected, so 
       - [x] EndPoint to access user's personal profile
     - [x] Only users with Admin privileges should be allowed to access these routes (Apply `auth.js` and `admin.js` ) 
       - [x] EndPoint to access all users general profiles
+
+
+
+### Refactor the Route Handlers: Express Error Middleware
+
+In our current implementation, every route handler has a `try-catch` block. This is repetitive code in every `catch` block which we should move to the special Express Error Middleware Function.
+
+#### Implement the Express Error Middleware
+
+- [ ] Make a new file in the *middleware/* folder named `error.js`
+- [ ] This file `error.js` should export a middleware function with four arguments: `error object`, `request object`, `response object` and the `next method`. It should have the following logic:
+  - [ ] **TODO**: The logic to log errors
+  - [ ] Terminating the request-response cycle by sending a 500 Internal Server Error to the client with a friendly message.
