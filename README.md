@@ -283,7 +283,7 @@ In our current implementation, every route handler has a `try-catch` block. This
 
 #### Implement the Express Error Middleware
 
-- [ ] Make a new file in the *middleware/* folder named `error.js`
-- [ ] This file `error.js` should export a middleware function with four arguments: `error object`, `request object`, `response object` and the `next method`. It should have the following logic:
+- [x] Make a new file in the *middleware/* folder named `error.js`
+- [x] This file `error.js` should export a middleware function with four arguments: `error object`, `request object`, `response object` and the `next method`. It should have the following logic:
   - [ ] **TODO**: The logic to log errors
-  - [ ] Terminating the request-response cycle by sending a 500 Internal Server Error to the client with a friendly message.
+  - [x] Terminating the request-response cycle by sending a 500 Internal Server Error to the client with a friendly message.
