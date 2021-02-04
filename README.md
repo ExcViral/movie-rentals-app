@@ -287,3 +287,8 @@ In our current implementation, every route handler has a `try-catch` block. This
 - [x] This file `error.js` should export a middleware function with four arguments: `error object`, `request object`, `response object` and the `next method`. It should have the following logic:
   - [ ] **TODO**: The logic to log errors
   - [x] Terminating the request-response cycle by sending a 500 Internal Server Error to the client with a friendly message.
+
+#### Refactor the code to use Express Error Middleware
+
+- [ ] Replace the code in every route handler with a call to `next()` and pass the exception object to this method.
+- [ ] Import this error middleware function in the `index.js` file and register it after all the route handler middlewares.
