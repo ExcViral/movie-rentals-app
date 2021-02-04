@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
-const Joi = require('joi')
-const { genreSchema } = require("./genres.js")
+const mongoose = require('mongoose');
+const Joi = require('joi');
+const { genreSchema } = require('./genres.js');
 
 const movieSchema = mongoose.Schema({
 	title: {
@@ -9,17 +9,17 @@ const movieSchema = mongoose.Schema({
 		trim: true,
 		minlength: 3,
 		maxlength: 255, // we don't want any malacious client to send too big string to break our app
-		set: function(s) {
-			let words = s.split(" ")
+		set: function (s) {
+			let words = s.split(' ');
 			for (let i = 0; i < words.length; i++) {
-			    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+				words[i] = words[i][0].toUpperCase() + words[i].substr(1);
 			}
-			return words.join(" ")
-		}
+			return words.join(' ');
+		},
 	},
 	genre: {
 		type: genreSchema,
-		required: true
+		required: true,
 	},
 	numberInStock: {
 		type: Number,
@@ -27,7 +27,7 @@ const movieSchema = mongoose.Schema({
 		default: 0,
 		// again we don't want negative number here, as well as we don't want too big number
 		min: 0,
-		max: 255
+		max: 255,
 	},
 	dailyRentalRate: {
 		type: Number,
@@ -35,12 +35,11 @@ const movieSchema = mongoose.Schema({
 		default: 0,
 		// again we don't want negative number here, as well as we don't want too big number
 		min: 0,
-		max: 255
-	}
-})
+		max: 255,
+	},
+});
 
-const Movie = mongoose.model('Movie', movieSchema)
-
+const Movie = mongoose.model('Movie', movieSchema);
 
 // ///////////////////////////////////////////////////////////
 // HELPER FUNCTIONS
@@ -48,27 +47,21 @@ const Movie = mongoose.model('Movie', movieSchema)
 
 // Function to Validate a Movie object
 // TODO: validate the genre array part
-// Note, we will ask genreId from client, 
-// so, as first line of defence, we will check if genreId exists, and it is a string 
+// Note, we will ask genreId from client,
+// so, as first line of defence, we will check if genreId exists, and it is a string
 // JOI SCHEMA CAN BE DIFFENT FROM MONGOOSE SCHEMA
 function validateMovie(movie) {
-	
 	const schema = Joi.object({
-		title: Joi.string()
-			.min(3)
-			.max(255)
-			.required(),
+		title: Joi.string().min(3).max(255).required(),
 		genreId: Joi.objectId(),
 		numberInStock: Joi.number().default(0),
-		dailyRentalRate: Joi.number().default(0)
-	})
-
-	return schema.validate(movie)
+		dailyRentalRate: Joi.number().default(0),
+	});
+	return schema.validate(movie);
 }
-
 
 module.exports = {
 	Movie: Movie,
 	validate: validateMovie,
-	movieSchema: movieSchema
-}
+	movieSchema: movieSchema,
+};

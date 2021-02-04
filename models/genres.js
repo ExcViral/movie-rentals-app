@@ -1,5 +1,5 @@
-const Joi = require('joi')
-const mongoose = require('mongoose')
+const Joi = require('joi');
+const mongoose = require('mongoose');
 
 // create schema for genres
 const genreSchema = new mongoose.Schema({
@@ -8,19 +8,18 @@ const genreSchema = new mongoose.Schema({
 		required: true,
 		minlength: 3,
 		trim: true,
-		set: function(s) {
-			let words = s.split(" ")
+		set: function (s) {
+			let words = s.split(' ');
 			for (let i = 0; i < words.length; i++) {
-			    words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+				words[i] = words[i][0].toUpperCase() + words[i].substr(1);
 			}
-			return words.join(" ")
-		}
-	}
-})
+			return words.join(' ');
+		},
+	},
+});
 
 // compile it into model
-const Genre = mongoose.model("Genre", genreSchema)
-
+const Genre = mongoose.model('Genre', genreSchema);
 
 // ///////////////////////////////////////////////////////////
 // HELPER FUNCTIONS
@@ -30,19 +29,14 @@ const Genre = mongoose.model("Genre", genreSchema)
 // input: Object with key - name and value -string
 // output: object with keys value and error
 function validateGenreName(name) {
-	
 	const schema = Joi.object({
-		name: Joi.string()
-			.min(3)
-			.required()
-	})
-
-	return schema.validate(name)
+		name: Joi.string().min(3).required(),
+	});
+	return schema.validate(name);
 }
-
 
 module.exports = {
 	Genre: Genre,
 	validate: validateGenreName,
-	genreSchema: genreSchema
-}
+	genreSchema: genreSchema,
+};
