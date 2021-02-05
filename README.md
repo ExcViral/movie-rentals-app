@@ -315,12 +315,12 @@ Essentially this is what will happen:
 
 #### Implement the `asyncMiddleware` factory function
 
-- [ ] `asyncMiddleware` should take in a route handler as an argument. This route handler will be an `async` function.
-- [ ] `asyncMiddleware` should return an anonymous `async` function definition
-  - [ ] This anonymous `async` function should accept three parameters: `req` a request object, `res` a response object, and `next` a method referencing to the next middleware. Express will call this anonymous function at runtime, and pass these three parameters at runtime.
-  - [ ] This anonymous `async` function should only contain a `try-catch` block.
-    - [ ] In the `try` block, we simply call and `await` for the route handler function that was passed as an argument to the `asyncMiddleware` function. <u>We also pass the the `req` and `res` as arguments to this route handler function call.</u>
-    - [ ] In the `catch` block, we simply call the `next()` method and pass our exception object to it as `next(exception)`. This tells express that in case of an exception, it must pass control to the special error middleware that we implemented in `error.js` and registered in `index.js` after all route handler middlewares.
+- [x] `asyncMiddleware` should take in a route handler as an argument. This route handler will be an `async` function.
+- [x] `asyncMiddleware` should return an anonymous `async` function definition
+  - [x] This anonymous `async` function should accept three parameters: `req` a request object, `res` a response object, and `next` a method referencing to the next middleware. Express will call this anonymous function at runtime, and pass these three parameters at runtime.
+  - [x] This anonymous `async` function should only contain a `try-catch` block.
+    - [x] In the `try` block, we simply call and `await` for the route handler function that was passed as an argument to the `asyncMiddleware` function. <u>We also pass the the `req` and `res` as arguments to this route handler function call.</u>
+    - [x] In the `catch` block, we simply call the `next()` method and pass our exception object to it as `next(exception)`. This tells express that in case of an exception, it must pass control to the special error middleware that we implemented in `error.js` and registered in `index.js` after all route handler middlewares.
 
 #### Refactor the code to use `asyncMiddleware` and remove `try-catch`
 
