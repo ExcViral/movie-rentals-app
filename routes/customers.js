@@ -2,9 +2,12 @@ const mongoose = require('mongoose');
 const debug = require('debug')('app:customers');
 const express = require('express');
 const { Customer, validate } = require('../models/customers.js');
+const router = express.Router();
+
+// middleware imports
+const asyncMiddleware = require('../middlewares/async.js');
 const auth = require('../middlewares/auth.js');
 const adminAuth = require('../middlewares/admin.js');
-const router = express.Router();
 
 // check database status, give it one second so that db gets connected
 setTimeout(() => {
@@ -22,9 +25,11 @@ setTimeout(() => {
 // CREATE
 
 // create a new customer
-router.post('/', auth, async (req, res, next) => {
-	debug('POST /api/genres/customers');
-	try {
+router.post(
+	'/',
+	auth,
+	asyncMiddleware(async (req, res) => {
+		debug('POST /api/genres/customers');
 		// validate the input from the client using joi
 		const { value, error } = validate(req.body);
 		// if invalid input reveived, send 400 bad request
@@ -33,28 +38,28 @@ router.post('/', auth, async (req, res, next) => {
 		let customer = new Customer(value);
 		customer = await customer.save();
 		res.send(customer);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // READ
 
 // handle request for all customers
-router.get('/', auth, async (req, res, next) => {
-	debug('GET /api/genres/customers');
-	try {
+router.get(
+	'/',
+	auth,
+	asyncMiddleware(async (req, res) => {
+		debug('GET /api/genres/customers');
 		const customers = await Customer.find({}).sort('name');
 		res.send(customers);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // handle request for a single customer
-router.get('/:id', auth, async (req, res, next) => {
-	debug(`GET /api/genres/customers/${req.params.id}`);
-	try {
+router.get(
+	'/:id',
+	auth,
+	asyncMiddleware(async (req, res) => {
+		debug(`GET /api/genres/customers/${req.params.id}`);
 		const customer = await Customer.findById(req.params.id);
 		// if customer not found return 404 not found
 		if (!customer)
@@ -65,17 +70,17 @@ router.get('/:id', auth, async (req, res, next) => {
 				);
 		// otherwise return customer document to the client
 		res.send(customer);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // UPDATE
 
 // handle request for updating a customer
-router.put('/:id', auth, async (req, res, next) => {
-	debug(`PUT /api/genres/customers/${req.params.id}`);
-	try {
+router.put(
+	'/:id',
+	auth,
+	asyncMiddleware(async (req, res) => {
+		debug(`PUT /api/genres/customers/${req.params.id}`);
 		// validate the input from the client using joi
 		const { value, error } = validate(req.body);
 		// if invalid input reveived, send 400 bad request
@@ -93,17 +98,17 @@ router.put('/:id', auth, async (req, res, next) => {
 				);
 		// else send the customer document to the client
 		res.send(customer);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // DELETE
 
 // handle request to delete a customer
-router.delete('/:id', auth, adminAuth, async (req, res, next) => {
-	debug(`DELETE /api/genres/customers/${req.params.id}`);
-	try {
+router.delete(
+	'/:id',
+	[auth, adminAuth],
+	asyncMiddleware(async (req, res) => {
+		debug(`DELETE /api/genres/customers/${req.params.id}`);
 		const customer = await Customer.findByIdAndRemove(req.params.id);
 		// if customer doesnot exist
 		if (!customer)
@@ -114,10 +119,8 @@ router.delete('/:id', auth, adminAuth, async (req, res, next) => {
 				);
 		// otherwise return deleted customer to the client
 		res.send(customer);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // export the router object
 module.exports = router;

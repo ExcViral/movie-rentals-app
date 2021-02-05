@@ -4,6 +4,9 @@ const express = require('express');
 const router = express.Router();
 const { Movie, validate } = require('../models/movies.js');
 const { Genre } = require('../models/genres.js');
+
+// middleware imports
+const asyncMiddleware = require('../middlewares/async.js');
 const auth = require('../middlewares/auth.js');
 
 // check database status, give it one second so that db gets connected
@@ -22,11 +25,12 @@ setTimeout(() => {
 // CREATE
 
 // handle request to create a movie object
-router.post('/', auth, async (req, res, next) => {
-	debug('POST /api/movies');
-	try {
+router.post(
+	'/',
+	auth,
+	asyncMiddleware(async (req, res) => {
+		debug('POST /api/movies');
 		// req.body should contain a json object with minimum [ title and id of genre ]
-
 		// first Joi validate the req.body sent by client
 		const { value, error } = validate(req.body);
 		// if error, send it to client
@@ -56,31 +60,29 @@ router.post('/', auth, async (req, res, next) => {
 		movie = await movie.save();
 		// finally return the movie document to the client
 		res.send(movie);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // READ
 
 // get all movies
-router.get('/', async (req, res, next) => {
-	debug('GET /api/movies');
-	try {
+router.get(
+	'/',
+	asyncMiddleware(async (req, res) => {
+		debug('GET /api/movies');
 		// get all the movies
 		const movies = await Movie.find({});
 		// send the movies
 		res.send(movies);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // // get all movies with pagination
 // // supports route: /api/movies?page=1&size=10
-// router.get('/', async (req, res, next) => {
-// 	debug('GET /api/movies');
-// 	try {
+// router.get(
+// 	'/',
+// 	asyncMiddleware(async (req, res) => {
+// 		debug('GET /api/movies');
 // 		let { page, size } = req.query;
 // 		page = parseInt(page);
 // 		size = parseInt(size);
@@ -89,15 +91,14 @@ router.get('/', async (req, res, next) => {
 // 			.skip((page - 1) * size)
 // 			.limit(size);
 // 		res.send(movies);
-// 	} catch (ex) {
-// 		next(ex);
-// 	}
-// });
+// 	})
+// );
 
 // get movie by id
-router.get('/:id', async (req, res, next) => {
-	debug(`GET /api/movies/${req.params.id}`);
-	try {
+router.get(
+	'/:id',
+	asyncMiddleware(async (req, res) => {
+		debug(`GET /api/movies/${req.params.id}`);
 		// try to find movie
 		const movie = await Movie.findById(req.params.id);
 		// if movie not found, return 404 not found
@@ -107,17 +108,17 @@ router.get('/:id', async (req, res, next) => {
 				.send('Sorry, we are unable to find the movie you have requested!');
 		// otherwise send the movie to the client
 		res.send(movie);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // UPDATE
 
 // update numberInStock
-router.put('/:id', auth, async (req, res, next) => {
-	debug(`PUT /api/movies/${req.params.id}`);
-	try {
+router.put(
+	'/:id',
+	auth,
+	asyncMiddleware(async (req, res) => {
+		debug(`PUT /api/movies/${req.params.id}`);
 		// first validate the req.body
 		const { value, error } = validate(req.body);
 		// if there is error, return 400 bad request
@@ -147,15 +148,15 @@ router.put('/:id', auth, async (req, res, next) => {
 		);
 		// send the updated movie to the client
 		res.send(movie);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // DELETE
-router.delete('/:id', auth, async (req, res, next) => {
-	debug(`DELETE /api/movies/${req.params.id}`);
-	try {
+router.delete(
+	'/:id',
+	auth,
+	asyncMiddleware(async (req, res) => {
+		debug(`DELETE /api/movies/${req.params.id}`);
 		// find the movie by id and delete it
 		const movie = await Movie.findByIdAndRemove(req.params.id);
 		// if no movie was found, return 404 not found error
@@ -167,9 +168,7 @@ router.delete('/:id', auth, async (req, res, next) => {
 				);
 		// By convention, send the deleted movie to the client for reference
 		res.send(movie);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 module.exports = router;

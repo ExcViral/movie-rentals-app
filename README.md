@@ -324,11 +324,11 @@ Essentially this is what will happen:
 
 #### Refactor the code to use `asyncMiddleware` and remove `try-catch`
 
-- [ ] In every module inside `routes/` folder where where have route handlers:
-  - [ ] Import the `asyncMiddleware` function using require statement
-  - [ ] In each route handler:
-    - [ ] Extract the code inside the `try` block to outside the `try` block, then remove the `try-catch` block.
-    - [ ] Wrap the route handler function inside the `asyncMiddleware` function call.
+- [x] In every module inside `routes/` folder where where have route handlers:
+  - [x] Import the `asyncMiddleware` function using require statement
+  - [x] In each route handler:
+    - [x] Extract the code inside the `try` block to outside the `try` block, then remove the `try-catch` block.
+    - [x] Wrap the route handler function inside the `asyncMiddleware` function call.
 
 ### h3
 

@@ -2,9 +2,13 @@ const mongoose = require('mongoose');
 const debug = require('debug')('app:rentals');
 const express = require('express');
 const router = express.Router();
+
 const { Rental, validate } = require('../models/rentals.js');
 const { Customer } = require('../models/customers.js');
 const { Movie } = require('../models/movies.js');
+
+// middleware imports
+const asyncMiddleware = require('../middlewares/async.js');
 const auth = require('../middlewares/auth.js');
 
 const Fawn = require('fawn');
@@ -26,9 +30,11 @@ setTimeout(() => {
 // CREATE
 
 // Endpoint to create a rental document
-router.post('/', auth, async (req, res, next) => {
-	debug('POST /api/rentals');
-	try {
+router.post(
+	'/',
+	auth,
+	asyncMiddleware(async (req, res) => {
+		debug('POST /api/rentals');
 		// first Joi validate the object received from the client
 		const { value, error } = validate(req.body);
 		// if invalid object received, terminate request immediately
@@ -88,25 +94,23 @@ router.post('/', auth, async (req, res, next) => {
 			.run();
 
 		res.send(rental);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // READ
 
 // Endpoint to get all rental documents
-router.get('/', auth, async (req, res, next) => {
-	debug('GET /api/rentals');
-	try {
+router.get(
+	'/',
+	auth,
+	asyncMiddleware(async (req, res) => {
+		debug('GET /api/rentals');
 		// query the db
 		const rentals = await Rental.find({}).sort('-dateOut');
 		// send the result
 		res.send(rentals);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // export the router object
 module.exports = router;

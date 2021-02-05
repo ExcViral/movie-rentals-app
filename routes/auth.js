@@ -6,6 +6,9 @@ const debug = require('debug')('app:auth');
 const { User } = require('../models/users.js');
 const Joi = require('joi');
 
+// middleware imports
+const asyncMiddleware = require('../middlewares/async.js');
+
 // check database status, give it one second so that db gets connected
 setTimeout(() => {
 	const state = mongoose.connection.readyState;
@@ -20,9 +23,10 @@ setTimeout(() => {
 // ///////////////////////////////////////////////////////////
 
 // handle login request
-router.post('/', async (req, res, next) => {
-	debug('POST /api/login');
-	try {
+router.post(
+	'/',
+	asyncMiddleware(async (req, res) => {
+		debug('POST /api/login');
 		// Joi validate username and password
 		const {
 			value: { username, password },
@@ -44,10 +48,8 @@ router.post('/', async (req, res, next) => {
 		// const token = jwt.sign({ _id: user._id}, config.get('jwt.pkey'))
 		const token = user.genJWT();
 		res.header('x-auth-token', token).send('login successful');
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // export the router
 module.exports = router;

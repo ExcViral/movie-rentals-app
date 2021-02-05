@@ -5,8 +5,11 @@ const debug = require('debug')('app:users-registration');
 const { User, validate } = require('../models/users.js');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
+
+// middleware imports
 const auth = require('../middlewares/auth.js');
 const adminAuth = require('../middlewares/admin.js');
+const asyncMiddleware = require('../middlewares/async.js');
 
 // check database status, give it one second so that db gets connected
 setTimeout(() => {
@@ -24,9 +27,10 @@ setTimeout(() => {
 // CREATE
 
 // handle request to register user
-router.post('/', async (req, res, next) => {
-	debug('POST /api/users');
-	try {
+router.post(
+	'/',
+	asyncMiddleware(async (req, res) => {
+		debug('POST /api/users');
 		// validate the input received from client
 		const { value, error } = validate(req.body);
 		// if there is an error, send it to client
@@ -63,17 +67,17 @@ router.post('/', async (req, res, next) => {
 		res
 			.header('x-auth-token', token)
 			.send(_.pick(user, ['_id', 'username', 'email']));
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // READ
 
 // handle request to get user's personal profile
-router.get('/me', auth, async (req, res, next) => {
-	debug(`GET /api/users/${req.user._id}`);
-	try {
+router.get(
+	'/me',
+	auth,
+	asyncMiddleware(async (req, res) => {
+		debug(`GET /api/users/${req.user._id}`);
 		// try to get the id from the db but exclude database field
 		const user = await User.findById(req.user._id).select('-password');
 		// if user not found return 404 not found
@@ -81,22 +85,20 @@ router.get('/me', auth, async (req, res, next) => {
 			return res.status(404).send('We cannot find the requested user.');
 		// otherwise return the user data to the client
 		res.send(user);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // [ADMIN ONLY] handle request to get all users' profiles
-router.get('/all', [auth, adminAuth], async (req, res, next) => {
-	debug(`GET /api/users/all`);
-	try {
+router.get(
+	'/all',
+	[auth, adminAuth],
+	asyncMiddleware(async (req, res) => {
+		debug(`GET /api/users/all`);
 		// try to get the id from the db but exclude database field
 		const users = await User.find({}).select('-password');
 		res.send(users);
-	} catch (ex) {
-		next(ex);
-	}
-});
+	})
+);
 
 // export the router object
 module.exports = router;
