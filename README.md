@@ -292,3 +292,44 @@ In our current implementation, every route handler has a `try-catch` block. This
 
 - [x] Replace the code in every route handler with a call to `next()` and pass the exception object to this method.
 - [x] Import this error middleware function in the `index.js` file and register it after all the route handler middlewares.
+
+
+
+### Refactor the Route Handlers: Remove Try-Catch Blocks
+
+Right now in every Route Handler function we have a `try-catch` block. This distracts us from the actual logic inside these Route Handlers, and only adds extra noise to our code. Also, a part of the code is still being repeated, every `catch` block is still the same in every route handler, the only code that differs is the code inside the `try` block.
+
+Ideally, we should move this high level code somewhere else in a single function. We need to have a template like function.
+
+In order to do this, we have to satisfy two constraints: 
+
+- The `app.get()` method requires a <u>function reference</u> which can accept the parameters: `request object`, `response object` and the `next method`.
+- We need to pass the route handler function as an argument to our template `asyncMiddleware` function, so we compulsorily need to call this template function and pass our route handler function as an argument.
+
+In order to satisfy both these constraints, our **`asyncMiddleware` function should behave like a factory function, i.e. whenever we call it and pass a route handler function, it should wrap this route handler function inside a `try-catch` block and return the whole thing as a new route handler function.**
+
+Essentially this is what will happen:
+
+- We will call this `asyncMiddleware` function inside `app.get()` or `router.get()`  or other http methods and pass our route handler function (without any try-catch block).
+- Since express http methods require a <u>function reference</u> and not a function call, our `asyncMiddleware` function will return a function reference to a new route handler (wrapped in a try-catch block), which then express can call it during the runtime and pass `req`, `res` and `next` arguments.
+
+#### Implement the `asyncMiddleware` factory function
+
+- [ ] `asyncMiddleware` should take in a route handler as an argument. This route handler will be an `async` function.
+- [ ] `asyncMiddleware` should return an anonymous `async` function definition
+  - [ ] This anonymous `async` function should accept three parameters: `req` a request object, `res` a response object, and `next` a method referencing to the next middleware. Express will call this anonymous function at runtime, and pass these three parameters at runtime.
+  - [ ] This anonymous `async` function should only contain a `try-catch` block.
+    - [ ] In the `try` block, we simply call and `await` for the route handler function that was passed as an argument to the `asyncMiddleware` function. <u>We also pass the the `req` and `res` as arguments to this route handler function call.</u>
+    - [ ] In the `catch` block, we simply call the `next()` method and pass our exception object to it as `next(exception)`. This tells express that in case of an exception, it must pass control to the special error middleware that we implemented in `error.js` and registered in `index.js` after all route handler middlewares.
+
+#### Refactor the code to use `asyncMiddleware` and remove `try-catch`
+
+- [ ] In every module inside `routes/` folder where where have route handlers:
+  - [ ] Import the `asyncMiddleware` function using require statement
+  - [ ] In each route handler:
+    - [ ] Extract the code inside the `try` block to outside the `try` block, then remove the `try-catch` block.
+    - [ ] Wrap the route handler function inside the `asyncMiddleware` function call.
+
+### h3
+
+#### h4
