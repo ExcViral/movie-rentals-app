@@ -40,6 +40,16 @@ const authAPI = require('./routes/auth.js');
 // middlewares
 app.use(express.json());
 
+// https://enable-cors.org/server_expressjs.html
+app.use(function (req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header(
+		'Access-Control-Allow-Headers',
+		'Origin, X-Requested-With, Content-Type, Accept'
+	);
+	next();
+});
+
 // export handling of routes to their respective routers
 app.use('/api/genres', genresAPI);
 app.use('/api/customers', customersAPI);
