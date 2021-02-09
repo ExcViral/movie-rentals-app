@@ -16,6 +16,18 @@ if (!config.get('jwt.pkey')) {
 	process.exit(1);
 }
 
+// Handle Uncaught Exceptions and log them
+process.on('uncaughtException', ex => {
+	winston.log('error', ex.message, ex);
+	process.exit(1);
+});
+
+// Handle Uncaught Promise Rejections and log them
+process.on('unhandledRejection', ex => {
+	winston.log('error', ex.message, ex);
+	process.exit(1);
+});
+
 // connect to db
 const connStr = config.get('db.connStr');
 debug(`connection string: ${connStr}`);
