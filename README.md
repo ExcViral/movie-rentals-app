@@ -330,6 +330,13 @@ Essentially this is what will happen:
     - [x] Extract the code inside the `try` block to outside the `try` block, then remove the `try-catch` block.
     - [x] Wrap the route handler function inside the `asyncMiddleware` function call.
 
+### Implement logic to log the errors in a log file
+
+- [x] Install package `winston`
+- [x] In the Express Error Middleware, implement logic to store all errors in a `logFile.log` file.
+- [x] In the `index.js` implement logic to handle all unexpected exceptions, also log them.
+- [x] In the `index.js` implement logic to handle all unexpected promise rejections, also log them.
+
 ### h3
 
 #### h4
