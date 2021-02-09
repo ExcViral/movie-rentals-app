@@ -1,6 +1,10 @@
+const winston = require('winston');
+
 const error = (err, req, res, next) => {
 	// TODO: Implement logic to log errors
-	console.log(err);
+	// console.log(err);
+	winston.log('error', err.message, err);
+
 	// send a 500 internal server error with friendly message
 	res
 		.status(500)
