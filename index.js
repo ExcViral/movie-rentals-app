@@ -1,10 +1,13 @@
 const express = require('express');
 const app = express();
+const winston = require('winston');
 const debug = require('debug')('app:main');
 const config = require('config');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
+
+winston.add(new winston.transports.File({ filename: 'logFile.log' }));
 
 // check if all environment variables are set
 // for json web token private key
