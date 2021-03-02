@@ -28,7 +28,7 @@ router.get(
 	'/',
 	asyncMiddleware(async (req, res) => {
 		debug('GET /api/genres');
-		const genres = await Genre.find({});
+		const genres = await Genre.find({}).select('-__v');
 		res.send(genres);
 	})
 );
@@ -38,7 +38,7 @@ router.get(
 	'/:id',
 	asyncMiddleware(async (req, res) => {
 		debug(`GET /api/genres/${req.params.id}`);
-		const genre = await Genre.findById(req.params.id);
+		const genre = await Genre.findById(req.params.id).select('-__v');
 		// return immediately if id doesnot exist
 		if (!genre) return res.status(404).send('Requested Genre Doesnot Exist');
 		// otherwise return genre to the client
@@ -56,6 +56,9 @@ router.post(
 		const { value, error } = validate(req.body);
 		// Return 400 for invalid input
 		if (error) return res.status(400).send(error.details[0].message);
+		// Check if genre already exists in the db
+		if (await Genre.findOne({ name: value.name }))
+			return res.status(400).send('This Genre already exists');
 		// otherwise create a genre
 		let genre = new Genre({
 			name: value.name,
@@ -78,6 +81,9 @@ router.put(
 		const { value, error } = validate(req.body);
 		// if invalid input, return 400 bad request
 		if (error) return res.status(400).send(error.details[0].message);
+		// Check if genre already exists in the db
+		if (await Genre.findOne({ name: value.name }))
+			return res.status(400).send('This Genre already exists');
 		// otherwise update the genre and return updated genre to client
 		genre.set({
 			name: value.name,
