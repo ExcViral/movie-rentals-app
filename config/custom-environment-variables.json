@@ -1,5 +1,8 @@
 {
     "jwt": {
         "pkey": "vidly_jwtpkey"
-    }
+    },
+    "db": {
+		"connStr": "vidly_dbConnStr"
+	}
 }
