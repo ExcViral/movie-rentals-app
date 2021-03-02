@@ -18,6 +18,9 @@ require('./startup/db.js')();
 // setup all routes
 require('./startup/routes.js')(app);
 
+// set up helmet and compression
+require('./startup/prod.js')(app);
+
 // Listen
 const PORT = process.env.PORT || 3000;
 
