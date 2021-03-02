@@ -15,6 +15,7 @@ const genreSchema = new mongoose.Schema({
 			}
 			return words.join(' ');
 		},
+		unique: true,
 	},
 });
 
