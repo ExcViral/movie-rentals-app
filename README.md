@@ -1,8 +1,1648 @@
 [toc]
 
-# vidly-app
 
-Vidly is an imaginary service for renting out movies. This project is a part of *Mosh Hamedani's* Udemy course on *node.js* 
+
+# movie-rentals-app
+
+This is an imaginary service for renting out movies
+
+
+
+# API Reference
+
+
+
+# [1] **Users & Authentication**
+
+
+
+## [1.1] **Registering a new user**
+
+Creates a new user and returns a JSON object containing email, id and username of newly created user. It also returns a Json web token as a header under key `'x-auth-token'`.
+
+- **URL**
+
+  `/api/users`
+
+- **Method:**
+
+  `POST`
+
+- **Data Params**
+
+  **Required Payload:**
+
+  ```js
+  {
+  	"username": "viral",
+  	"email": "viral@gmail.com",
+  	"password": "1234"
+  }
+  ```
+
+  **Payload Restrictions:**
+
+  * Payload Cannot be empty
+  * `username` field is compulsory, it should be a string, minimum 3 chars, maximum 255 chars. It should be unique.
+  * `email`field is compulsory, it should be a valid email address. It should be unique.
+  * `password` should be a string, minimum 3 characters.
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "_id": "603e0691c7a0563b56871ff9",
+        "username": "excviral",
+        "email": "exc@gmail.com"
+    }
+    ```
+
+    **Headers**: key: `'x-auth-token'` value: `[json web token]`
+
+- **Error Response:**
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `Joi Validation Error (Custom Message)` 
+
+    This will be sent when payload restrictions are not met.
+
+  OR
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `Username Taken`
+
+  OR
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `email Taken`
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [1.2] **Logging in a user**
+
+Authenticates a user with valid username and password and returns a Json Web Token.
+
+- **URL**
+
+  `/api/login`
+
+- **Method:**
+
+  `POST`
+
+- **Data Params**
+
+  **Required Payload:**
+
+  ```js
+  {
+  	"username":"viral",
+  	"password":"1234"
+  }
+  ```
+
+  **Payload Restrictions:**
+
+  * Payload Cannot be empty
+  * `username` field is compulsory, it should be a string, minimum 3 chars, maximum 255 chars.
+  * `password` should be a string, minimum 3 characters.
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** `login successful`
+
+    **Headers**: key: `'x-auth-token'` value: `[json web token]`
+
+- **Error Response:**
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `Joi Validation Error (Custom Message)` 
+
+    This will be sent when payload restrictions are not met.
+
+  OR
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `Invalid Username or Password`
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [1.3] **Get a User's Profile**
+
+Returns a **JSON Object** containing the details of currently logged in User.
+
+- **URL**
+
+  `api/users/me`
+
+- **Method:**
+
+  `GET` 
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:**
+
+    ```js
+    {
+        "isAdmin": false,
+        "_id": "6015285312e6795da5db21a4",
+        "username": "viral",
+        "email": "viral@gmail.com",
+        "__v": 0
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 404 NOT FOUND
+    **Content:** `We cannot find the requested user.`
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [1.4] **Get all Users' Details**
+
+Returns an array of **JSON Objects** containing the details of all Users of the application.
+
+- **URL**
+
+  `api/users/all`
+
+- **Method:**
+
+  `GET` 
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** Admin Only
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:**
+
+    ```js
+    [
+        {
+            "isAdmin": true,
+            "_id": "601526529d719b5bfe793b66",
+            "username": "excviral",
+            "email": "exc.viral@gmail.com",
+            "__v": 0
+        },
+        {
+            "isAdmin": false,
+            "_id": "6015285312e6795da5db21a4",
+            "username": "viral",
+            "email": "viral@gmail.com",
+            "__v": 0
+        },
+        ...UserObjects
+    ]
+    ```
+
+- **Error Response:**
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+# [2] **Genres**
+
+
+
+## [2.1] **Get All Genres**
+
+Returns an **array of JSON objects** containing all available Movie Genres.
+
+- **URL**
+
+  `/api/genres`
+
+- **Method:**
+
+  `GET` 
+
+- **Authentication:** None
+
+- **Authorisation:** None
+
+- **Headers:** None
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    [
+        {
+            "_id": "6006e6fde82ab570192c2232",
+            "name": "Action"
+        },
+        {
+            "_id": "6007a9600e5de71cd196c422",
+            "name": "Adventure"
+        },
+        ...GenreObjects
+    ]
+    ```
+
+- **Error Response:**
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [2.2] **Get a Single Genre**
+
+Returns a **JSON Object** containing the requested Genre.
+
+- **URL**
+
+  `/api/genres/:id`
+
+- **Method:**
+
+  `GET` 
+
+- **Authentication:** None
+
+- **Authorisation:** None
+
+- **Headers:** None
+
+- **URL Params**
+
+  **Required:**
+
+  `id=[MongoDB ObjectId]`
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:**
+
+    ```js
+    {
+        "_id": "6006e6fde82ab570192c2232",
+        "name": "Action"
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 404 NOT FOUND
+    **Content:** `Requested Genre Doesnot Exist`
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [2.3] **Create a New Genre**
+
+Creates a new genre and returns a JSON object containing newly created Genre.
+
+- **URL**
+
+  `/api/genres`
+
+- **Method:**
+
+  `POST`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **Data Params**
+
+  **Required Payload:**
+
+  `{"name":"Genre Name"}`
+
+  **Payload Restrictions:**
+
+  * Payload cannot be empty 
+  * Name field is compulsory, it should be a string
+  * Minimum Length of *Genre Name*: 3 Characters
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "_id": "603dde13392fd72f95bfbf70",
+        "name": "Thriller",
+    }
+    ```
+
+    
+
+- **Error Response:**
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `Joi Validation Error (Custom Message)` 
+
+    This will be sent when payload restrictions are not met.
+
+  OR
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `This Genre already exists`
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [2.4] **Update a Genre**
+
+Edits the requested genre and returns a JSON object of the updated Genre.
+
+- **URL**
+
+  `/api/genres/:id`
+
+- **Method:**
+
+  `PUT`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **URL Params**
+
+  **Required:**
+
+  `id=[MongoDB ObjectId]`
+
+- **Data Params**
+
+  **Required Payload:**
+
+  `{"name":"Genre Name"}`
+
+  **Payload Restrictions:**
+
+  * Payload cannot be empty 
+  * Name field is compulsory, it should be a string
+  * Minimum Length of *Genre Name*: 3 Characters
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "_id": "601bed72e1cd8456826f665f",
+        "name": "Crime",
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 404 NOT FOUND
+    **Content:** `Requested Genre Doesnot Exist`
+
+  OR
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `Joi Validation Error (Custom Message)` 
+
+    This will be sent when payload restrictions are not met.
+
+  OR
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `This Genre already exists`
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [2.5] **Delete a Genre**
+
+Deletes the Genre and returns a JSON object containing the deleted Genre.
+
+- **URL**
+
+  `/api/genres/:id`
+
+- **Method**
+
+  `DELETE`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** Admin Only
+
+- **Headers**:
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **URL Params**
+
+  **Required:**
+
+  `id=[MongoDB ObjectId]`
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "_id": "601bed72e1cd8456826f665f",
+        "name": "Crime",
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 404 NOT FOUND
+    **Content:** `Requested Genre Doesnot Exist`
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+# [3] **Customers**
+
+
+
+## [3.1] **Create a new Customer**
+
+Creates a customer and returns a JSON object containing all the properties of newly created customer object.
+
+- **URL**
+
+  `/api/customers`
+
+- **Method:**
+
+  `POST`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **Data Params**
+
+  **Required Payload:**
+
+  ```js
+  {
+  	"name": "bobba fett",
+  	"phoneNumber": "8765846952",
+  	"isGold": true
+  }
+  ```
+
+  **Payload Restrictions:**
+
+  * Payload cannot be empty 
+  * `name` field is required, it should be a string, minimum length 3 characters
+  * `phoneNumber` field is required, it should be a string of 10 characters long
+  * `isGold` is not compulsory. If not specified, default value is false.
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "isGold": true,
+        "_id": "603defb7c7a0563b56871fdd",
+        "name": "Bobba Fett",
+        "phoneNumber": "8765846952",
+        "__v": 0
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `Joi Validation Error (Custom Message)` 
+
+    This will be sent when payload restrictions are not met.
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [3.2] **Get all Customers**
+
+Returns an **array of JSON objects** containing all available Customers (Sorted by Name).
+
+- **URL**
+
+  `/api/customers`
+
+- **Method:**
+
+  `GET`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    [
+        {
+            "isGold": true,
+            "_id": "6007e6323ed4dd4ca07aab60",
+            "name": "Banrang Bhaijan",
+            "phoneNumber": "9400768200",
+            "__v": 0
+        },
+        {
+            "isGold": true,
+            "_id": "601cd6e6d1d9e62a9ec7ff0b",
+            "name": "Bobba Fett",
+            "phoneNumber": "8765846952",
+            "__v": 0
+        },
+        ...CustomerObjects
+    ]
+    ```
+
+- **Error Response:**
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+
+
+## [3.3] **Get a single Customer**
+
+Returns a JSON Object containing the data of requested customer.
+
+- **URL**
+
+  `/api/customers/:id`
+
+- **Method:**
+
+  `GET`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **URL Params**
+
+  **Required:**
+
+  `id=[MongoDB ObjectId]`
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "isGold": true,
+        "_id": "603defb7c7a0563b56871fdd",
+        "name": "Bobba Fett",
+        "phoneNumber": "8765846952",
+        "__v": 0
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 404 NOT FOUND
+    **Content:** `Sorry, we are unable to find the requested customer in our records ...`
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+
+
+## [3.4] **Update a Customer**
+
+Updates and returns a JSON object containing the updated Customer.
+
+- **URL**
+
+  `/api/customers/:id`
+
+- **Method:**
+
+  `PUT`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **URL Params**
+
+  **Required:**
+
+  `id=[MongoDB ObjectId]`
+
+- **Data Params**
+
+  **Required Payload:**
+
+  ```js
+  {
+  	"name": "shantilal khurana",
+  	"phoneNumber": "9999999999",
+  	"isGold": false
+  }
+  ```
+
+  **Payload Restrictions:**
+
+  * Payload cannot be empty 
+  * `name` field is required, it should be a string, minimum length 3 characters
+  * `phoneNumber` field is required, it should be a string of 10 characters long
+  * `isGold` is not compulsory. If not specified, default value is false.
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "isGold": false,
+        "_id": "6007e594d1fd424c5a024007",
+        "name": "Shantilal Khurana",
+        "phoneNumber": "9999999999",
+        "__v": 0
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 404 NOT FOUND
+    **Content:** `					'Sorry, we are unable to find the requested customer in our records ...'`
+
+  OR
+
+  * **Code:** 400 BAD REQUEST
+    **Content:** `Joi Validation Error (Custom Message)` 
+
+    This will be sent when payload restrictions are not met.
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+
+
+## [3.5] **Delete a Customer**
+
+Deletes the Customer object and returns a JSON object containing the deleted Customer.
+
+- **URL**
+
+  `/api/customers/:id`
+
+- **Method:**
+
+  `DELETE`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** Admin Only
+
+- **Headers**:
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **URL Params**
+
+  **Required:**
+
+  `id=[MongoDB ObjectId]`
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "isGold": false,
+        "_id": "6007e594d1fd424c5a024007",
+        "name": "Shantilal Khurana",
+        "phoneNumber": "9999999999",
+        "__v": 0
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 404 NOT FOUND
+    **Content:** `'Sorry, we are unable to find the requested customer in our records ...'`
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+
+
+# [4] **Movies**
+
+
+
+## [4.1] **Create a new Movie**
+
+Creates a movie and returns a JSON object containing all the properties of newly created movie object.
+
+- **URL**
+
+  `/api/movies`
+
+- **Method:**
+
+  `POST`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **Data Params**
+
+  **Required Payload:**
+
+  ```js
+  {
+  	"title": "Martian",
+  	"genreId": "6007ab01d3b6651e3ece3b2a",
+  	"numberInStock": 5
+  	"dailyRentalRate": 1
+  }
+  ```
+
+  **Payload Restrictions:**
+
+  * Payload cannot be empty 
+  * `title` field is required, it should be a string, minimum length 3 characters.
+  * `genreId` field is required, it should be a string containing a valid ObjectId.
+  * `numberInStock` is a number. It is not compulsory. If not specified, default value is automatically set to 0. The upper limit is set to 255. The lower limit is set to 0.
+  * `dailyRentalRate` is a number. It is not compulsory. If not specified, default value is automatically set to 0. The upper limit is set to 255. The lower limit is set to 0.
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "numberInStock": 5,
+        "dailyRentalRate": 1,
+        "_id": "603dff7ec7a0563b56871fe6",
+        "title": "Martian",
+        "genre": {
+            "_id": "6007ab01d3b6651e3ece3b2a",
+            "name": "Science Fiction"
+        },
+        "__v": 0
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `Joi Validation Error (Custom Message)` 
+
+    This will be sent when payload restrictions are not met.
+
+  OR
+
+  * **Code:** 404 NOT FOUND
+    **Content:** `'Invalid Genre, The selected genre does not exist in database ...'` 
+
+    This will be sent when invalid GenreId is passed by user.
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [4.2] **Get all Movies**
+
+Returns an array containing JSON objects containing data of all the available movies.
+
+- **URL**
+
+  `/api/movies`
+
+- **Method:**
+
+  `GET`
+
+- **Authentication:** None
+
+- **Authorisation:** None
+
+- **Headers**: None
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    [
+        {
+            "numberInStock": 4,
+            "dailyRentalRate": 0,
+            "_id": "600b013f103a640466fcad3d",
+            "title": "Star Trek 2009",
+            "genre": {
+                "_id": "6007ab01d3b6651e3ece3b2a",
+                "name": "Science Fiction"
+            },
+            "__v": 0
+        },
+        {
+            "numberInStock": 9,
+            "dailyRentalRate": 1,
+            "_id": "600b0242103a640466fcad3f",
+            "title": "Inception",
+            "genre": {
+                "_id": "6007ab01d3b6651e3ece3b2a",
+                "name": "Science Fiction"
+            },
+            "__v": 0
+        },
+        ...MovieObjects
+    ]
+    ```
+
+- **Error Response:**
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [4.3] **Get a single Movie**
+
+Returns a JSON object containing data of the requested movie.
+
+- **URL**
+
+  `/api/movies/:id`
+
+- **Method:**
+
+  `GET`
+
+- **Authentication:** None
+
+- **Authorisation:** None
+
+- **Headers**: None
+
+- **URL Params**
+
+  **Required:**
+
+  `id=[MongoDB ObjectId]`
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "numberInStock": 10,
+        "dailyRentalRate": 1,
+        "_id": "600b0242103a640466fcad3f",
+        "title": "Inception",
+        "genre": {
+            "_id": "6007ab01d3b6651e3ece3b2a",
+            "name": "Science Fiction"
+        },
+        "__v": 0
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 404 NOT FOUND
+    **Content:** `Sorry, we are unable to find the movie you have requested!` 
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [4.4] **Update a Movie**
+
+Updates a movie object and then returns it in a JSON object.
+
+- **URL**
+
+  `/api/movies/:id`
+
+- **Method:**
+
+  `PUT`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **URL Params**
+
+  **Required:**
+
+  `id=[MongoDB ObjectId]`
+
+- **Data Params**
+
+  **Required Payload:**
+
+  ```js
+  {
+  	"title": "Inception",
+  	"genreId": "6007ab01d3b6651e3ece3b2a",
+  	"numberInStock": 10,
+  	"dailyRentalRate": 1
+  }
+  ```
+
+  **Payload Restrictions:**
+
+  * Payload cannot be empty 
+  * `title` field is required, it should be a string, minimum length 3 characters.
+  * `genreId` field is required, it should be a string containing a valid ObjectId.
+  * `numberInStock` is a number. It is not compulsory. If not specified, default value is automatically set to 0. The upper limit is set to 255. The lower limit is set to 0.
+  * `dailyRentalRate` is a number. It is not compulsory. If not specified, default value is automatically set to 0. The upper limit is set to 255. The lower limit is set to 0.
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "numberInStock": 10,
+        "dailyRentalRate": 1,
+        "_id": "600b0242103a640466fcad3f",
+        "title": "Inception",
+        "genre": {
+            "_id": "6007ab01d3b6651e3ece3b2a",
+            "name": "Science Fiction"
+        },
+        "__v": 0
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `Joi Validation Error (Custom Message)` 
+
+    This will be sent when payload restrictions are not met.
+
+  OR
+
+  * **Code:** 404 NOT FOUND
+    **Content:** `'Invalid Genre, The selected genre does not exist in database ...'` 
+
+    This will be sent when invalid GenreId is passed by user.
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [4.5] **Delete a Movie**
+
+Deletes the movie object and returns it in a JSON object.
+
+- **URL**
+
+  `/api/movies/:id`
+
+- **Method:**
+
+  `DELETE`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **URL Params**
+
+  **Required:**
+
+  `id=[MongoDB ObjectId]`
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "numberInStock": 4,
+        "dailyRentalRate": 0,
+        "_id": "600b013f103a640466fcad3d",
+        "title": "Star Trek 2009",
+        "genre": {
+            "_id": "6007ab01d3b6651e3ece3b2a",
+            "name": "Science Fiction"
+        },
+        "__v": 0
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 404 NOT FOUND
+    **Content:** `'Sorry, we are unable to find the movie you have requested to delete!'`
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+# [5] **Rentals**
+
+
+
+## [5.1] **Create a Rental**
+
+Creates a rental object and then returns the newly created rental object in a JSON object.
+
+- **URL**
+
+  `/api/rentals`
+
+- **Method:**
+
+  `POST`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **Data Params**
+
+  **Required Payload:**
+
+  ```js
+  {
+  	"customerId": "6007e6323ed4dd4ca07aab60",
+  	"movieId": "600b0242103a640466fcad3f"
+  }
+  ```
+
+  **Payload Restrictions:**
+
+  * Payload cannot be empty 
+  * `customerId` field is required, it should be a string containing a valid ObjectId.
+  * `movieId` field is required, it should be a string containing a valid ObjectId.
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    {
+        "rentalFee": 5,
+        "_id": "603e0227c7a0563b56871fe9",
+        "customer": {
+            "_id": "6007e6323ed4dd4ca07aab60",
+            "name": "Banrang Bhaijan",
+            "phoneNumber": "9400768200",
+            "isGold": true
+        },
+        "movie": {
+            "_id": "600b0242103a640466fcad3f",
+            "title": "Inception",
+            "dailyRentalRate": 1
+        },
+        "dateOut": "2021-03-02T09:15:19.472Z"
+    }
+    ```
+
+- **Error Response:**
+
+  - **Code:** 400 BAD REQUEST
+    **Content:** `Joi Validation Error (Custom Message)` 
+
+    This will be sent when payload restrictions are not met.
+
+  OR
+
+  * **Code:** 400 BAD REQUEST
+    **Content:** `Sorry, the selected movie is out of stock` 
+
+    This will be sent when an out of stock movie is requested.
+
+  OR
+
+  * **Code:** 404 NOT FOUND
+    **Content:** `'Sorry, we are unable to find the movie you have requested!'` 
+
+    This will be sent when invalid movieId is passed by user.
+
+  OR
+
+  * **Code:** 404 NOT FOUND
+    **Content:** `'Sorry, we are unable to find the requested customer in our records ...'` 
+
+    This will be sent when invalid customerId is passed by user.
+
+  OR
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+## [5.2] **Get all Rentals**
+
+Returns an array of JSON objects containing data of all the rental objects.
+
+- **URL**
+
+  `/api/rentals`
+
+- **Method:**
+
+  `GET`
+
+- **Authentication:** Sign In Required
+
+- **Authorisation:** None
+
+- **Headers**
+
+  **Required:**
+
+  key: `x-auth-token` value: `[json web token]`
+
+- **Success Response:**
+
+  - **Code:** 200
+    **Content:** 
+
+    ```js
+    [
+        {
+            "rentalFee": 5,
+            "_id": "603e0227c7a0563b56871fe9",
+            "customer": {
+                "_id": "6007e6323ed4dd4ca07aab60",
+                "name": "Banrang Bhaijan",
+                "phoneNumber": "9400768200",
+                "isGold": true
+            },
+            "movie": {
+                "_id": "600b0242103a640466fcad3f",
+                "title": "Inception",
+                "dailyRentalRate": 1
+            },
+            "dateOut": "2021-03-02T09:15:19.472Z"
+        },
+        {
+            "rentalFee": 5,
+            "_id": "601cd9b5eeaf052c748b448d",
+            "customer": {
+                "_id": "6007e6323ed4dd4ca07aab60",
+                "name": "Banrang Bhaijan",
+                "phoneNumber": "9400768200",
+                "isGold": true
+            },
+            "movie": {
+                "_id": "600b0242103a640466fcad3f",
+                "title": "Inception",
+                "dailyRentalRate": 1
+            },
+            "dateOut": "2021-02-05T05:37:57.545Z"
+        },
+        ...RentalObjects
+    ]
+    ```
+
+- **Error Response:**
+
+  - **Code:** 500 INTERNAL SERVER ERROR
+    **Content:** `Oh no! Something bad happened. Please come back later when we fixed that problem. Thanks.`
+
+- **Sample Call:**
+
+  <*Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable.*>
+
+  [**TO BE ADDED LATER**]
+
+- **Notes:**
+
+  <*This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here.*>
+
+  [**TO BE ADDED LATER**]
+
+
+
+
+
+
+
+# [Project Log]
+
+This project is a part of *Mosh Hamedani's* Udemy course on *node.js* 
 
 
 
@@ -10,7 +1650,7 @@ Vidly is an imaginary service for renting out movies. This project is a part of 
 
 Create a service for managing the list of movie genres. 
 
-Route: `http://vidly.com/api/genres`
+Route: `http://movie-rentals-app.com/api/genres`
 
 **Rubric**
 
@@ -20,7 +1660,7 @@ Route: `http://vidly.com/api/genres`
 - [x] EndPoint for updating existing Genres
 - [x] EndPoint for deleting existing Genres
 
-### Restructure the vidly-app
+### Restructure the movie-rentals-app
 
 So far everything we have built will be in one file. It is not a good way to build an app. So, let's restructure it in a clean and manageable way.
 
@@ -37,7 +1677,7 @@ So far we have been storing our data in arrays, and all the data was wiped out o
 **Rubric**
 
 - [x] Get rid of all the arrays
-- [x] Create a new database for storing all the data for our vidly-app
+- [x] Create a new database for storing all the data for our movie-rentals-app
 - [x] Refactor the code to use our new database while retaining all existing functionalities
 
 
@@ -46,7 +1686,7 @@ So far we have been storing our data in arrays, and all the data was wiped out o
 
 Create a service to manage the details of customers
 
-Route: `http://vidly.com/api/customers`
+Route: `http://movie-rentals-app.com/api/customers`
 
 **Rubric**
 
@@ -68,7 +1708,7 @@ Route: `http://vidly.com/api/customers`
   - [x] EndPoint for updating a customer document in the database
   - [x] EndPoint for Deleting a customer document in the database
 
-### Restructure the vidly-app
+### Restructure the movie-rentals-app
 
 **To keep our applications maintainable, we should ensure that each module is responsible for only and only one thing. This is called <u>Single Responsibility Principle</u>**
 
@@ -89,7 +1729,7 @@ Now we have a singular responsibility for  `routes/genres.js`, and the `route/cu
 
 Create a new service to manage the catalogue of movies.
 
-Route: `http://vidly.com/api/movies`
+Route: `http://movie-rentals-app.com/api/movies`
 
 **Rubric**
 
@@ -114,7 +1754,7 @@ Route: `http://vidly.com/api/movies`
 
 - Create a new service to manage the catalogue of movies.
   
-  Route: `http://vidly.com/api/rentals`
+  Route: `http://movie-rentals-app.com/api/rentals`
   
   ##### Rubric
   
@@ -158,7 +1798,7 @@ That is verifying credentials at the time on logging in.
 
 - **Create a new service for managing the users**
 
-  Route: `http://vidly.com/api/users`
+  Route: `http://movie-rentals-app.com/api/users`
 
   - [x] Create a new collection for users
     - [x] The shape of the `User` document should be:
@@ -195,7 +1835,7 @@ That is verifying credentials at the time on logging in.
 
 - **Create a new service for allowing users to log in**
 
-  Route: `http://vidly.com/api/login`
+  Route: `http://movie-rentals-app.com/api/login`
 
   - [x] The API should have a single End Point to allow users to log in
     - [x] The module for handling this logic must be named `auth.js`
@@ -337,6 +1977,76 @@ Essentially this is what will happen:
 - [x] In the `index.js` implement logic to handle all unexpected exceptions, also log them.
 - [x] In the `index.js` implement logic to handle all unexpected promise rejections, also log them.
 
-### h3
+### Refactor `index.js`
 
-#### h4
+In `index.js`, currently we have a lack of separation of concerns. The are too many <u>require statements</u> in our `index.js`. Then we have code for handling and logging errors. Then we have something completely different, like configuration. Then we have logic for connecting to the database. Then we set up routes, middlewares etc... These are all different concerns, and mixing them together in a single module is not at all good.
+
+Our `index.js` module should only <u>orchestrate</u> these different concerns. So, the details of this orchestration should be moved into other modules. For example, setting up routes and connecting to database are separate concerns, so they should be put in their own modules.
+
+We can create a new folder named `startup/` where we can create new modules for each of these concerns and store details(code) there.
+
+
+
+#### Extract all routes to a separate module
+
+- [x] Create a new module named `startup/routes.js`
+- [x] This module should export a function, which should take in `app` object of `expressjs` as an argument.
+  - [x] We do this because we want to have a single `app` object in our entire application. We don't want to load express and create a new `app` object for each module. So, we pass a reference to this module while requiring it by calling the exported function and passing the `app` object.
+- [x] Move all the code that require our route handler modules to this file
+- [x] Move all the route handler middlewares to this file 
+- [x] Move all the other dependencies that are required
+- [x] Finally import this module in `index.js` and then call it to set up the routes
+
+
+
+#### Extract and Refactor the database logic to a separate module
+
+- [x] Create a new module named `startup/db.js`
+
+- [x] This module should export a function, which when called will setup and connect our application to the database
+
+- [x] Move the `mongoose.connect()` logic from `index.js` to `startup/db.js` along with all the dependencies, and remove them from `index.js`
+
+- [x] Refactor the code:
+
+  - [x] Currently our db initialisation looks like this:
+
+    ```javascript
+    mongoose
+    	.connect(connStr, { useNewUrlParser: true, useUnifiedTopology: true })
+    	.then(() => {
+    		console.log('Connected to the database');
+    	})
+    	.catch(err => {
+    		console.log('Could not connect to mongoDB', err);
+    	});
+    ```
+
+    **Here, in the `.then()` block, we are simply printing to the console, we must instead use `winston` to log an informational message to our logs.**
+
+    **Also, we have called `.catch()`, but we are not really doing anything here, in reality, if there is any error, we must log in using `winston`. So, what we should do is remove the `.catch()` block completely, so that it will become an unhandled promise rejection upon failure. This will then be catched by our global unhandled promise rejection handler logic automatically and logged into our logs and our process will be terminated.**
+
+
+
+#### Extract the logging logic to a separate module
+
+- [x] Create a new module named `startup/logging.js`
+- [x] This module must export a function, which when called should setup the logic to handle and log unhandled exceptions and promise rejections
+
+
+
+#### Extract the config logic to a separate module
+
+- [x] Create a new module named `startup/config.js`
+- [x] This module should export a function, which when called should check if essential config settings like if environment variables are set and so on...
+- [x] Extract all the logic for checking essential config settings like if environment variables are set and so on... and move it to this module
+- [x] Also, instead of manually logging an error here, throw an exception with `Error` object so that our global unhandled exception handler catches it. Don't simply throw a string error, as `Error` object will contain a stack trace, normal string won't contain that. 
+
+
+
+# References
+
+[API Documentation Style Guide](https://gist.github.com/iros/3426278)
+
+[NodeJs Course](https://www.udemy.com/course/nodejs-master-class/)
+
