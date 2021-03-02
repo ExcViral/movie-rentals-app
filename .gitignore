@@ -1,1 +1,3 @@
 node_modules/
+routes/genres_without_persistence.js
+*.log
